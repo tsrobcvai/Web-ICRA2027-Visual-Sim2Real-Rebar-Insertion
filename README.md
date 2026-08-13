@@ -77,9 +77,18 @@ behaviour more closely.)
 
 ## Deploying to GitHub Pages
 
+**Current status:** pushed to
+`tsrobcvai/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion` (**private**), Pages **not**
+enabled — deliberately, so nothing is reachable during double-blind review. GitHub
+Pages serves to a *public* URL even from a private repo, so enabling it now would
+defeat the point.
+
+When the paper is accepted (or when an anonymous host is ready), one flip:
+
 ```bash
-gh repo create <owner>/<repo> --public --source=. --remote=origin --push
-gh api -X POST repos/<owner>/<repo>/pages -f 'source[branch]=main' -f 'source[path]=/'
+gh repo edit tsrobcvai/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion --visibility public --accept-visibility-change-consequences
+gh api -X POST repos/tsrobcvai/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion/pages \
+  -f 'source[branch]=main' -f 'source[path]=/'
 ```
 
 Then the site is at `https://<owner>.github.io/<repo>/`.
