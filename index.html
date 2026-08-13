@@ -22,7 +22,6 @@
   <div class="nav-inner">
     <a class="nav-brand" href="#top">GRIT</a>
     <div class="nav-links">
-      <a href="#abstract">Abstract</a>
       <a href="#background">Background</a>
       <a href="#framework">Framework</a>
       <a href="#videos">Videos</a>
@@ -74,42 +73,6 @@
 
   </div>
 </header>
-
-<!-- ============================== ABSTRACT ============================== -->
-<section class="section" id="abstract">
-  <div class="container narrow">
-    <h2>Abstract</h2>
-    <p>
-      Rebar installation &mdash; placing steel reinforcement bars into support racks
-      before concrete is poured &mdash; is among the most repetitive and physically
-      demanding tasks on construction sites. Automating it means contact-rich,
-      millimeter-clearance insertion of parts that, unlike machined components,
-      differ from bar to bar within production tolerances. Learned insertion systems
-      today rely on real-world data, which is costly for heavy steel parts and does
-      not track the geometry of each new batch.
-    </p>
-    <p>
-      We build and deploy <strong>GRIT</strong>, a visual sim-to-real system trained
-      entirely in simulation: a privileged state-based teacher is trained with
-      reinforcement learning over procedurally generated rebar and rack geometries,
-      and distilled into a multi-view visual student that acts directly on raw RGB,
-      trained under heavy appearance randomization and with dynamics randomization
-      anchored at system-identified values. Deployment therefore carries no
-      perception stack at all &mdash; no segmentation model, no pose estimator, only
-      calibrated cameras and the policy.
-    </p>
-    <p>
-      Without any real-world data or fine-tuning, GRIT exceeds
-      <strong>95&#8202;% insertion success</strong> on hardware across bars spanning
-      one design's tolerance range, and covers a nine-design catalog in simulation
-      &mdash; a level of zero-shot transfer rarely, if ever, shown by an
-      <em>end-to-end visual</em> insertion policy, since prior sim-to-real insertion
-      systems act on state from a separate pose estimator. Ablations show that
-      training-time geometry randomization is decisive across production tolerances
-      and speeds adaptation to unseen designs.
-    </p>
-  </div>
-</section>
 
 <!-- ============================== BACKGROUND ============================== -->
 <section class="section alt" id="background">
