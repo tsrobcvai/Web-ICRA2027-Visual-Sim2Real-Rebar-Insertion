@@ -42,7 +42,7 @@ limit — if `long_run.mp4` gets big, host it on YouTube and embed instead.
 | File | Where it appears | Status |
 | --- | --- | --- |
 | `background.svg` (or `.png`) | Background section | **waiting for upload** — the vector figure |
-| `teaser.png` | Hero | draft, copied from the paper |
+| `teaser.png` | not on the page — only the `og:image` social preview | draft, copied from the paper |
 | `framework.png` | Training framework | draft, copied from the paper (`figures_src/pipeline_preview.png`) |
 | `motivation.png`, `rebar_family.png` | Background section | draft, copied from the paper |
 

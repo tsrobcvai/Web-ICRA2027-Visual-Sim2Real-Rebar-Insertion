@@ -130,8 +130,6 @@ a { color: var(--teal-dark); }
 .stat-num { font-size: 28px; font-weight: 800; color: var(--teal-dark); line-height: 1.1; }
 .stat-lab { font-size: 13.5px; color: var(--ink-soft); margin-top: 4px; line-height: 1.35; }
 
-.teaser { margin: 44px auto 0; max-width: 980px; }
-
 /* ------------------------------ sections ------------------------------ */
 .section { padding: 66px 0; border-bottom: 1px solid var(--line); }
 .section.alt { background: var(--bg-alt); }
@@ -150,7 +148,7 @@ a { color: var(--teal-dark); }
 figure { margin: 0; }
 .fig { margin: 26px 0 0; }
 .fig.wide { max-width: 100%; }
-.fig img, .teaser img { width: 100%; height: auto; display: block; border-radius: 10px; }
+.fig img { width: 100%; height: auto; display: block; border-radius: 10px; }
 figcaption {
   font-size: 14.5px; color: var(--ink-soft); margin-top: 10px; line-height: 1.5;
 }
