@@ -196,7 +196,8 @@ figcaption {
 .video-col:nth-child(2) .col-head { border-top-color: var(--violet); }
 .video-col:nth-child(3) .col-head { border-top-color: var(--amber); }
 .col-k {
-  font-size: 12px; font-weight: 800; letter-spacing: .1em; color: var(--ink-faint);
+  font-size: 12px; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-faint);
 }
 .col-head h3 { margin: 2px 0 6px; font-size: 20px; font-weight: 700; }
 .col-head p { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
