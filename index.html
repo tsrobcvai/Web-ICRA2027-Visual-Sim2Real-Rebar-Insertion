@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GRIT — Visual Sim-to-Real Learning for Robotic Rebar Insertion</title>
+<meta name="description" content="An end-to-end visuomotor policy that inserts rebar of varying geometry at over 95% success, trained entirely in simulation with zero real-world data.">
+
+<!-- Social preview (update the URL once the site is live) -->
+<meta property="og:title" content="GRIT — Visual Sim-to-Real Rebar Insertion">
+<meta property="og:description" content="One end-to-end visuomotor policy. Any rebar size. >95% real-world success. Zero real-world data.">
+<meta property="og:image" content="static/images/teaser.png">
+<meta property="og:type" content="website">
+
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
+</head>
+<body>
+
+<!-- ============================== NAV ============================== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top">GRIT</a>
+    <div class="nav-links">
+      <a href="#abstract">Abstract</a>
+      <a href="#background">Background</a>
+      <a href="#framework">Framework</a>
+      <a href="#videos">Videos</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<header class="hero" id="top">
+  <div class="container">
+
+    <h1 class="title">
+      Visual Sim-to-Real Learning for Robotic Insertion under Geometric Variations:
+      <span class="title-sub">Application to Rebar Installation</span>
+    </h1>
+
+    <!-- TODO(user): replace with the real author list after the double-blind review period. -->
+    <div class="authors tbd-inline">
+      <span class="tbd-tag">TBD</span>
+      Anonymous Authors &nbsp;·&nbsp; Under double-blind review
+    </div>
+    <div class="affiliations tbd-inline">
+      <span class="tbd-tag">TBD</span> Affiliations withheld for review
+    </div>
+    <div class="venue">Submitted to ICRA 2027</div>
+
+    <!-- Link buttons. Anything without a URL yet renders as a disabled "soon" chip. -->
+    <div class="buttons">
+      <a class="btn btn-disabled" href="#" aria-disabled="true">📄 Paper <span class="soon">soon</span></a>
+      <a class="btn btn-disabled" href="#" aria-disabled="true">📚 arXiv <span class="soon">soon</span></a>
+      <a class="btn btn-disabled" href="#" aria-disabled="true">🎬 Video <span class="soon">soon</span></a>
+      <a class="btn btn-disabled" href="#" aria-disabled="true">💻 Code <span class="soon">soon</span></a>
+    </div>
+
+    <!-- ---------- the one-line claim ---------- -->
+    <p class="pitch">
+      A single <em>end-to-end</em> visuomotor policy inserts rebar
+      <span class="hl">across the whole size range</span> at
+      <span class="hl">over 95&#8202;% success</span> on real hardware &mdash;
+      trained <span class="hl">entirely in simulation</span>, with
+      <span class="hl">zero real-world data</span>.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-num">&gt;95&#8202;%</div><div class="stat-lab">real-world insertion success</div></div>
+      <div class="stat"><div class="stat-num">0</div><div class="stat-lab">real-world training samples</div></div>
+      <div class="stat"><div class="stat-num">9</div><div class="stat-lab">rebar designs covered</div></div>
+      <div class="stat"><div class="stat-num">1.3&#8202;mm</div><div class="stat-lab">slot clearance</div></div>
+    </div>
+
+    <figure class="teaser">
+      <div class="media-slot" data-img="static/images/teaser.png"
+           data-label="Teaser figure"
+           data-hint="Replace with the final teaser (sim &rarr; real side by side)."></div>
+      <figcaption>
+        <span class="draft-tag">draft</span>
+        Left/top: the policy trained entirely in simulation. Right/bottom: the same
+        policy, weights frozen, running on the real cell.
+      </figcaption>
+    </figure>
+
+  </div>
+</header>
+
+<!-- ============================== ABSTRACT ============================== -->
+<section class="section" id="abstract">
+  <div class="container narrow">
+    <h2>Abstract</h2>
+    <p>
+      Rebar installation &mdash; placing steel reinforcement bars into support racks
+      before concrete is poured &mdash; is among the most repetitive and physically
+      demanding tasks on construction sites. Automating it means contact-rich,
+      millimeter-clearance insertion of parts that, unlike machined components,
+      differ from bar to bar within production tolerances. Learned insertion systems
+      today rely on real-world data, which is costly for heavy steel parts and does
+      not track the geometry of each new batch.
+    </p>
+    <p>
+      We build and deploy <strong>GRIT</strong>, a visual sim-to-real system trained
+      entirely in simulation: a privileged state-based teacher is trained with
+      reinforcement learning over procedurally generated rebar and rack geometries,
+      and distilled into a multi-view visual student that acts directly on raw RGB,
+      trained under heavy appearance randomization and with dynamics randomization
+      anchored at system-identified values. Deployment therefore carries no
+      perception stack at all &mdash; no segmentation model, no pose estimator, only
+      calibrated cameras and the policy.
+    </p>
+    <p>
+      Without any real-world data or fine-tuning, GRIT exceeds
+      <strong>95&#8202;% insertion success</strong> on hardware across bars spanning
+      one design's tolerance range, and covers a nine-design catalog in simulation
+      &mdash; a level of zero-shot transfer rarely, if ever, shown by an
+      <em>end-to-end visual</em> insertion policy, since prior sim-to-real insertion
+      systems act on state from a separate pose estimator. Ablations show that
+      training-time geometry randomization is decisive across production tolerances
+      and speeds adaptation to unseen designs.
+    </p>
+  </div>
+</section>
+
+<!-- ============================== BACKGROUND ============================== -->
+<section class="section alt" id="background">
+  <div class="container">
+    <h2>Background</h2>
+    <p class="lead narrow-p">
+      On site, workers lift each bar, align it with the slots of a support rack, and
+      force it down &mdash; thousands of times per site. The motion is a classic
+      contact-rich insertion problem, with one complication that laboratory
+      peg-in-hole settings do not have: <strong>the parts themselves vary</strong>.
+      Fabricated rebar carries production tolerances in bend angle, cut length,
+      out-of-plane twist, and hook geometry, so a practical system has to be robust
+      to a <em>distribution</em> of geometries rather than one CAD model.
+    </p>
+
+    <!-- The vector figure the user will upload. Drop it at static/images/background.svg
+         (or .png / .pdf-exported .svg) and it appears here automatically. -->
+    <figure class="fig">
+      <div class="media-slot tall" data-img="static/images/background.svg,static/images/background.png"
+           data-label="Background figure (vector)"
+           data-hint="Upload your vector figure as <code>static/images/background.svg</code> &mdash; it will replace this box automatically."></div>
+      <figcaption>The rebar installation problem and where the geometric variation comes from.</figcaption>
+    </figure>
+
+    <div class="fig-row">
+      <figure class="fig">
+        <div class="media-slot" data-img="static/images/motivation.png"
+             data-label="Manual installation photo"></div>
+        <figcaption><span class="draft-tag">draft</span> Manual rebar installation on site.</figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="media-slot" data-img="static/images/rebar_family.png"
+             data-label="Rebar geometry family"></div>
+        <figcaption><span class="draft-tag">draft</span> Procedurally generated geometry family: nominal designs and their tolerance envelopes.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FRAMEWORK ============================== -->
+<section class="section" id="framework">
+  <div class="container">
+    <h2>Training Framework</h2>
+    <p class="lead narrow-p">
+      Three phases, one controller. A privileged <strong>teacher</strong> is trained
+      with RL on procedurally generated geometry; it is distilled into a multi-view
+      <strong>visual student</strong> under heavy appearance and dynamics
+      randomization; the student is then deployed <strong>zero-shot</strong>, weights
+      frozen, through the identical task-space impedance controller.
+    </p>
+
+    <figure class="fig wide">
+      <div class="media-slot" data-img="static/images/framework.png"
+           data-label="Framework figure"
+           data-hint="Replace with the final vector version (<code>framework.svg</code>) when it is ready."></div>
+      <figcaption><span class="draft-tag">draft</span> The GRIT training and deployment pipeline.</figcaption>
+    </figure>
+
+    <div class="phases">
+      <div class="phase phase-1">
+        <div class="phase-k">Phase 1</div>
+        <h3>Privileged teacher &mdash; RL in simulation</h3>
+        <p>
+          State-based policy over privileged proprioception, object and contact state.
+          Trained across procedurally generated rebar and rack geometries, with
+          reset-state banks covering free-space approach and partially inserted states.
+        </p>
+      </div>
+      <div class="phase phase-2">
+        <div class="phase-k">Phase 2</div>
+        <h3>Visual student &mdash; distillation</h3>
+        <p>
+          Shared ResNet-18 encoder over multiple calibrated views plus sim-to-real
+          proprioception. DAgger + behavior cloning (&beta;&nbsp;=&nbsp;0.5) under
+          heavy appearance randomization and system-identified dynamics randomization.
+        </p>
+      </div>
+      <div class="phase phase-3">
+        <div class="phase-k">Phase 3</div>
+        <h3>Zero-shot deployment</h3>
+        <p>
+          Frozen weights, same controller, same camera layout. No segmentation model,
+          no pose estimator, no fine-tuning &mdash; and no real-world data anywhere in
+          the pipeline.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== VIDEOS ============================== -->
+<section class="section alt" id="videos">
+  <div class="container">
+    <h2>Policy Demos</h2>
+    <p class="lead narrow-p">
+      All clips show the same frozen policy on real hardware, played at 1&times; unless
+      noted.
+      <span class="note">Empty slots below are waiting for footage &mdash; drop the file
+      at the path shown and it appears automatically.</span>
+    </p>
+
+    <div class="video-grid">
+
+      <!-- ---------- Column 1: geometry robustness ---------- -->
+      <div class="video-col">
+        <div class="col-head">
+          <div class="col-k">01</div>
+          <h3>Robust to geometry</h3>
+          <p>Bars that differ in length, width, bend angle and hook shape &mdash; one policy, no retraining.</p>
+        </div>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/geometry_01.mp4" data-label="Geometry 1"></div>
+          <figcaption>Nominal design, within tolerance</figcaption>
+        </figure>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/geometry_02.mp4" data-label="Geometry 2"></div>
+          <figcaption>Shorter bar / tolerance extreme</figcaption>
+        </figure>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/geometry_03.mp4" data-label="Geometry 3"></div>
+          <figcaption>Wider bar / tolerance extreme</figcaption>
+        </figure>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/geometry_04.mp4" data-label="Geometry 4"></div>
+          <figcaption>Unseen design, zero-shot</figcaption>
+        </figure>
+      </div>
+
+      <!-- ---------- Column 2: external disturbance ---------- -->
+      <div class="video-col">
+        <div class="col-head">
+          <div class="col-k">02</div>
+          <h3>Robust to disturbance</h3>
+          <p>The bar is pushed, pulled and knocked mid-insertion; the policy re-approaches and seats it anyway.</p>
+        </div>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/disturbance_01.mp4" data-label="Disturbance 1"></div>
+          <figcaption>Push during approach</figcaption>
+        </figure>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/disturbance_02.mp4" data-label="Disturbance 2"></div>
+          <figcaption>Pull mid-insertion</figcaption>
+        </figure>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/disturbance_03.mp4" data-label="Disturbance 3"></div>
+          <figcaption>Rack nudged out of place</figcaption>
+        </figure>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/disturbance_04.mp4" data-label="Disturbance 4"></div>
+          <figcaption>Repeated disturbance, recovery</figcaption>
+        </figure>
+      </div>
+
+      <!-- ---------- Column 3: long uncut run ---------- -->
+      <div class="video-col">
+        <div class="col-head">
+          <div class="col-k">03</div>
+          <h3>Continuous operation</h3>
+          <p>One uncut take: grasp &rarr; insert &rarr; retract, bar after bar, no operator in the loop.</p>
+        </div>
+        <div class="sticky-wrap">
+          <figure class="vid long">
+            <div class="media-slot video portrait" data-video="static/videos/long_run.mp4" data-label="Long continuous run"
+                 data-hint="One long clip, e.g. 3&ndash;10&nbsp;min of back-to-back grasp&ndash;insert cycles."></div>
+            <figcaption>Uncut grasp&ndash;insert loop <span class="tbd-tag small">duration TBD</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Failure cases: kept as an explicit, honest placeholder section. -->
+    <div class="failures">
+      <h3>Failure cases</h3>
+      <p class="narrow-p">The modes we do see, shown unedited.</p>
+      <div class="fig-row">
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/failure_01.mp4" data-label="Failure 1"></div>
+          <figcaption>Failure mode 1 <span class="tbd-tag small">TBD</span></figcaption>
+        </figure>
+        <figure class="vid">
+          <div class="media-slot video" data-video="static/videos/failure_02.mp4" data-label="Failure 2"></div>
+          <figcaption>Failure mode 2 <span class="tbd-tag small">TBD</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== BIBTEX ============================== -->
+<section class="section" id="bibtex">
+  <div class="container narrow">
+    <h2>BibTeX</h2>
+    <pre class="bibtex"><code>@inproceedings{anonymous2027grit,
+  title     = {Visual Sim-to-Real Learning for Robotic Insertion under
+               Geometric Variations: Application to Rebar Installation},
+  author    = {Anonymous},
+  booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
+  year      = {2027},
+  note      = {Under review}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container narrow">
+    <p>
+      Page content is under review; figures marked <span class="draft-tag">draft</span>
+      are provisional and will be replaced.
+    </p>
+    <p class="small">
+      Website released under
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+      Layout follows the conventions of academic project pages such as
+      <a href="https://nerfies.github.io/">Nerfies</a>.
+    </p>
+  </div>
+</footer>
+
+<script src="static/js/main.js"></script>
+</body>
+</html>
