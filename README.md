@@ -25,9 +25,16 @@ file to the right path.** No HTML editing needed.
 | `failure_01.mp4`, `failure_02.mp4` | Row 4 — failure cases |
 
 Each row is a horizontal filmstrip: the wheel (or the arrow buttons, or a swipe)
-moves through that row's clips, and scrolling hands back to the page at either end.
-Adding a fifth clip to a row is just another `<figure class="clip">` — the arrows and
-the edge fade pick it up on their own.
+moves through that row's clips. A row whose clips are wider than the window **wraps
+around end-to-end** — the strip is cloned three times and `scrollLeft` is shifted by
+exactly one lap at the seam, so the wrap is invisible. To keep an endless strip from
+trapping the page, the wheel hijack lasts **one lap**; keep scrolling the same way past
+a full turn and the page scrolls again (pausing or reversing arms another lap).
+
+A row that already fits on screen does not scroll or loop, and hides its arrows — with
+the 440 px clip width that means roughly **three or more clips before a row starts
+looping**. Adding a clip is just another `<figure class="clip">`; the cloning, arrows
+and edge fade pick it up on their own.
 
 Short clips autoplay muted on loop and pause when scrolled out of view;
 `long_run.mp4` carries `data-once` so it plays through with controls instead.
