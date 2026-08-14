@@ -57,15 +57,14 @@
 
     <!-- ---------- the one-line claim ---------- -->
     <p class="pitch">
-      A single <em>end-to-end</em> visuomotor policy inserts rebar
+      One <em>end-to-end</em> visuomotor policy inserts rebar
       <span class="hl">of varying geometry</span> at
       <span class="hl">over 95&#8202;% success</span> on real hardware &mdash;
-      trained <span class="hl">entirely in simulation</span>, with
-      <span class="hl">zero real-world data</span>.
+      trained <span class="hl">only in simulation</span>.
     </p>
 
     <div class="stats">
-      <div class="stat"><div class="stat-num">&gt;95&#8202;%</div><div class="stat-lab">real-world insertion success, <strong>across rebar geometries</strong></div></div>
+      <div class="stat"><div class="stat-num">&gt;95&#8202;%</div><div class="stat-lab">real-world success, <strong>across rebar geometries</strong></div></div>
       <div class="stat"><div class="stat-num">0</div><div class="stat-lab">real-world training samples</div></div>
       <div class="stat"><div class="stat-num">1.3&#8202;mm</div><div class="stat-lab">slot clearance</div></div>
     </div>
@@ -78,34 +77,22 @@
   <div class="container">
     <h2>Background</h2>
     <p class="lead narrow-p">
-      On site, workers lift each bar, align it with the slots of a support rack, and
-      force it down &mdash; thousands of times per site. The motion is a classic
-      contact-rich insertion problem, with one complication that laboratory
-      peg-in-hole settings do not have: <strong>the parts themselves vary</strong>.
-      Fabricated rebar carries production tolerances in bend angle, cut length,
-      out-of-plane twist, and hook geometry, so a practical system has to be robust
-      to a <em>distribution</em> of geometries rather than one CAD model.
+      Workers lift each bar, align it with the rack slots, and force it down &mdash;
+      thousands of times per site. It is contact-rich insertion with a twist:
+      <strong>the parts vary</strong>. Bend angle, cut length, out-of-plane twist and
+      hook shape all drift within production tolerances, so no two bars are alike.
     </p>
 
     <div class="fig-row">
       <figure class="fig">
         <div class="media-slot" data-img="static/images/motivation.png"
              data-label="Manual installation photo"></div>
-        <figcaption>
-          Manual rebar installation on site. The worker lifts each bar, then aligns it
-          with the rack and forces it down into the slots &mdash; thousands of times
-          per site.
-        </figcaption>
+        <figcaption>Manual rebar installation on site.</figcaption>
       </figure>
       <figure class="fig">
         <div class="media-slot" data-img="static/images/Picture2.svg"
              data-label="Rebar geometry family"></div>
-        <figcaption>
-          Rebar as it actually arrives: real bars photographed on site, spanning the
-          range of appearance and geometry the system has to handle &mdash; bend angle,
-          cut length, out-of-plane twist and hook shape all drift within production
-          tolerances, and no two bars are alike.
-        </figcaption>
+        <figcaption>Real bars as they arrive: appearance and geometry vary from bar to bar.</figcaption>
       </figure>
     </div>
   </div>
@@ -116,11 +103,10 @@
   <div class="container">
     <h2>Training Framework</h2>
     <p class="lead narrow-p">
-      Three phases, one controller. A privileged <strong>teacher</strong> is trained
-      with RL on procedurally generated geometry; it is distilled into a multi-view
-      <strong>visual student</strong> under heavy appearance and dynamics
-      randomization; the student is then deployed <strong>zero-shot</strong>, weights
-      frozen, through the identical task-space impedance controller.
+      Three phases, one controller. A privileged <strong>teacher</strong> learns the
+      task with RL on procedurally generated geometry, a multi-view
+      <strong>visual student</strong> is distilled from it under heavy randomization,
+      and the student deploys <strong>zero-shot</strong> with frozen weights.
     </p>
 
     <figure class="fig wide">
@@ -135,27 +121,25 @@
         <div class="phase-k">Phase 1</div>
         <h3>Privileged teacher &mdash; RL in simulation</h3>
         <p>
-          State-based policy over privileged proprioception, object and contact state.
-          Trained across procedurally generated rebar and rack geometries, with
-          reset-state banks covering free-space approach and partially inserted states.
+          State-based policy over privileged proprioception, object and contact state,
+          trained across procedurally generated rebar and rack geometries.
         </p>
       </div>
       <div class="phase phase-2">
         <div class="phase-k">Phase 2</div>
         <h3>Visual student &mdash; distillation</h3>
         <p>
-          Shared ResNet-18 encoder over multiple calibrated views plus sim-to-real
-          proprioception. DAgger + behavior cloning (&beta;&nbsp;=&nbsp;0.5) under
-          heavy appearance randomization and system-identified dynamics randomization.
+          Shared ResNet-18 encoder over calibrated views plus proprioception.
+          DAgger&nbsp;+&nbsp;BC (&beta;&nbsp;=&nbsp;0.5) under appearance and
+          system-identified dynamics randomization.
         </p>
       </div>
       <div class="phase phase-3">
         <div class="phase-k">Phase 3</div>
         <h3>Zero-shot deployment</h3>
         <p>
-          Frozen weights, same controller, same camera layout. No segmentation model,
-          no pose estimator, no fine-tuning &mdash; and no real-world data anywhere in
-          the pipeline.
+          Frozen weights, same controller, same cameras. No segmentation model, no
+          pose estimator, no fine-tuning.
         </p>
       </div>
     </div>
@@ -166,12 +150,7 @@
 <section class="section alt" id="videos">
   <div class="container">
     <h2>Policy Demos</h2>
-    <p class="lead narrow-p">
-      All clips show the same frozen policy on real hardware, played at 1&times; unless
-      noted.
-      <span class="note">Empty slots below are waiting for footage &mdash; drop the file
-      at the path shown and it appears automatically.</span>
-    </p>
+    <p class="lead narrow-p">The same frozen policy on real hardware, played at 1&times;.</p>
 
     <div class="video-grid">
 
@@ -180,7 +159,7 @@
         <div class="col-head">
           <div class="col-k">varying the part</div>
           <h3>Robust to geometry</h3>
-          <p>Bars that differ in length, width, bend angle and hook shape &mdash; one policy, no retraining.</p>
+          <p>Bars differing in length, width, bend angle and hook shape. One policy, no retraining.</p>
         </div>
         <figure class="vid">
           <div class="media-slot video" data-video="static/videos/geometry_01.mp4" data-label="Geometry 1"></div>
@@ -205,7 +184,7 @@
         <div class="col-head">
           <div class="col-k">perturbing the scene</div>
           <h3>Robust to disturbance</h3>
-          <p>The bar is pushed, pulled and knocked mid-insertion; the policy re-approaches and seats it anyway.</p>
+          <p>The bar is pushed and knocked mid-insertion. The policy re-approaches and seats it.</p>
         </div>
         <figure class="vid">
           <div class="media-slot video" data-video="static/videos/disturbance_01.mp4" data-label="Disturbance 1"></div>
@@ -230,7 +209,7 @@
         <div class="col-head">
           <div class="col-k">running it long</div>
           <h3>Continuous operation</h3>
-          <p>One uncut take: grasp &rarr; insert &rarr; retract, bar after bar, no operator in the loop.</p>
+          <p>One uncut take: grasp, insert, retract, bar after bar.</p>
         </div>
         <div class="sticky-wrap">
           <figure class="vid long">
@@ -246,7 +225,7 @@
     <!-- Failure cases: kept as an explicit, honest placeholder section. -->
     <div class="failures">
       <h3>Failure cases</h3>
-      <p class="narrow-p">The modes we do see, shown unedited.</p>
+      <p class="narrow-p">Shown unedited.</p>
       <div class="fig-row">
         <figure class="vid">
           <div class="media-slot video" data-video="static/videos/failure_01.mp4" data-label="Failure 1"></div>
@@ -272,15 +251,9 @@
 
 <footer class="footer">
   <div class="container narrow">
-    <p>
-      Page content is under review; figures marked <span class="draft-tag">draft</span>
-      are provisional and will be replaced.
-    </p>
     <p class="small">
-      Website released under
-      <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
-      Layout follows the conventions of academic project pages such as
-      <a href="https://nerfies.github.io/">Nerfies</a>.
+      Figures marked <span class="draft-tag">draft</span> are provisional.
+      Released under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
     </p>
   </div>
 </footer>

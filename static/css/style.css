@@ -143,7 +143,6 @@ a { color: var(--teal-dark); }
   background: var(--teal); border-radius: 2px; margin-top: 10px;
 }
 .lead { font-size: 18px; color: var(--ink-soft); }
-.note { color: var(--amber); font-weight: 600; }
 
 /* figures */
 figure { margin: 0; }
