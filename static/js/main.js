@@ -3,8 +3,11 @@
 
    Every image/video on the page is declared as
 
-     <div class="media-slot"       data-img="path/a.svg,path/b.png"  ...>
+     <div class="media-slot"       data-img="path/a.svg|path/b.png"  ...>
      <div class="media-slot video" data-video="static/videos/x.mp4"  ...>
+
+   Candidates are separated by "|" -- NOT by "," which appears inside every
+   base64 data: URI (that is what tools/bundle_preview.py substitutes in).
 
    This script tries each candidate path in order. The first one that
    actually loads is inserted; if none load, the slot renders a
@@ -20,7 +23,7 @@
   slots.forEach(function (slot) {
     var isVideo = slot.hasAttribute("data-video");
     var list = (slot.getAttribute(isVideo ? "data-video" : "data-img") || "")
-      .split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+      .split("|").map(function (s) { return s.trim(); }).filter(Boolean);
 
     tryNext(slot, list, 0, isVideo);
   });

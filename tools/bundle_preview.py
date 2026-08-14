@@ -31,10 +31,11 @@ def data_uri(rel: str) -> str | None:
 
 
 def embed_imgs(m: re.Match) -> str:
+    # "|" is the candidate separator, not "," -- a base64 data: URI contains a comma.
     out = []
-    for cand in m.group(1).split(","):
+    for cand in m.group(1).split("|"):
         out.append(data_uri(cand.strip()) or cand.strip())
-    return 'data-img="' + ",".join(out) + '"'
+    return 'data-img="' + "|".join(out) + '"'
 
 
 html = re.sub(r'data-img="([^"]+)"', embed_imgs, html)
