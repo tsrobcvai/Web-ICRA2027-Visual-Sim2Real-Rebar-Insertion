@@ -13,6 +13,7 @@
   --teal:       #0f8b80;
   --teal-dark:  #0a6b62;
   --violet:     #6f57c9;
+  --teal-wash:  #eef6f5;
   --amber:      #b4700a;
   --amber-bg:   #fff8e8;
   --amber-line: #e6c079;
@@ -144,6 +145,21 @@ a { color: var(--teal-dark); }
 }
 .lead { font-size: 18px; color: var(--ink-soft); }
 .lead strong { color: var(--ink); font-weight: 700; }
+
+/* the thesis band between Background and Framework */
+.claim {
+  padding: 52px 0; background: var(--teal-wash);
+  border-bottom: 1px solid var(--line);
+}
+.claim-k {
+  font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--teal-dark); margin-bottom: 10px;
+}
+.claim p {
+  margin: 0; font-size: clamp(20px, 2.3vw, 27px); line-height: 1.45;
+  font-weight: 600; letter-spacing: -.01em; text-wrap: balance;
+}
+.claim strong { color: var(--teal-dark); font-weight: 800; }
 
 /* figures */
 figure { margin: 0; }
