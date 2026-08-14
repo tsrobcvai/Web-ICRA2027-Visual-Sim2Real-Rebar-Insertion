@@ -127,8 +127,11 @@ a { color: var(--teal-dark); }
   flex: 1 1 170px; padding: 16px 14px;
   border: 1px solid var(--line); border-radius: var(--radius); background: #fff;
 }
+.stat-lead { flex: 1.7 1 280px; border-color: rgba(15,139,128,.45); }
 .stat-num { font-size: 28px; font-weight: 800; color: var(--teal-dark); line-height: 1.1; }
+.stat-lead .stat-num { font-size: 34px; }
 .stat-lab { font-size: 13.5px; color: var(--ink-soft); margin-top: 4px; line-height: 1.35; }
+.stat-lab strong { color: var(--ink); font-weight: 700; }
 
 /* ------------------------------ sections ------------------------------ */
 .section { padding: 66px 0; border-bottom: 1px solid var(--line); }
