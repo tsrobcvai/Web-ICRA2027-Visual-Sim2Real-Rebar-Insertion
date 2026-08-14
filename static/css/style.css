@@ -252,6 +252,7 @@ figcaption {
 }
 
 /* ------------------------------ bibtex + footer ------------------------------ */
+/* Kept for when the real citation is pasted back into the #bibtex section. */
 .bibtex {
   background: #12161b; color: #e6edf3; border-radius: var(--radius);
   padding: 20px 22px; overflow-x: auto;
