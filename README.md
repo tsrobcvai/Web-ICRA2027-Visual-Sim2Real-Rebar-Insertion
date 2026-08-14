@@ -19,13 +19,19 @@ file to the right path.** No HTML editing needed.
 
 | File | Where it appears |
 | --- | --- |
-| `geometry_01.mp4` … `geometry_04.mp4` | Column 1 — robustness to rebar geometry |
-| `disturbance_01.mp4` … `disturbance_04.mp4` | Column 2 — robustness to external disturbance |
-| `long_run.mp4` | Column 3 — one long uncut grasp→insert take |
-| `failure_01.mp4`, `failure_02.mp4` | Failure cases |
+| `geometry_01.mp4` … `geometry_04.mp4` | Row 1 — robustness to rebar geometry |
+| `disturbance_01.mp4` … `disturbance_04.mp4` | Row 2 — robustness to external disturbance |
+| `long_run.mp4` | Row 3 — one long uncut grasp→insert take |
+| `failure_01.mp4`, `failure_02.mp4` | Row 4 — failure cases |
 
-Short clips autoplay muted on loop (and pause when scrolled off screen); `long_run.mp4`
-plays once with controls.
+Each row is a horizontal filmstrip: the wheel (or the arrow buttons, or a swipe)
+moves through that row's clips, and scrolling hands back to the page at either end.
+Adding a fifth clip to a row is just another `<figure class="clip">` — the arrows and
+the edge fade pick it up on their own.
+
+Short clips autoplay muted on loop and pause when scrolled out of view;
+`long_run.mp4` carries `data-once` so it plays through with controls instead.
+Clips are boxed at 16:9 and letterboxed on black, so mixed aspect ratios still line up.
 
 **Encoding** — keep them small so the page loads on a conference wifi:
 

@@ -194,35 +194,60 @@ figcaption {
 .phase h3 { margin: 6px 0 8px; font-size: 18px; font-weight: 700; }
 .phase p { margin: 0; font-size: 15px; color: var(--ink-soft); }
 
-/* ------------------------------ video grid ------------------------------ */
-.video-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 26px; margin-top: 34px; align-items: start;
+/* ------------------------------ demo rows ------------------------------ */
+.demo-row { margin-top: 42px; }
+.row-head {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
+  border-top: 3px solid var(--teal); padding-top: 12px; margin-bottom: 16px;
 }
-.video-col { display: flex; flex-direction: column; gap: 20px; }
-.col-head {
-  border-top: 3px solid var(--teal); padding-top: 12px;
-}
-.video-col:nth-child(2) .col-head { border-top-color: var(--violet); }
-.video-col:nth-child(3) .col-head { border-top-color: var(--amber); }
-.col-k {
-  font-size: 12px; font-weight: 800; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--ink-faint);
-}
-.col-head h3 { margin: 2px 0 6px; font-size: 20px; font-weight: 700; }
-.col-head p { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
+.row-disturbance .row-head { border-top-color: var(--violet); }
+.row-long        .row-head { border-top-color: var(--amber); }
+.row-failure     .row-head { border-top-color: var(--ink-faint); }
+.row-title h3 { margin: 0 0 4px; font-size: 21px; font-weight: 700; }
+.row-title p  { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
 
-.vid video { width: 100%; height: auto; display: block; border-radius: 10px; background: #000; }
-.vid figcaption { font-size: 14px; margin-top: 8px; }
-.sticky-wrap { position: sticky; top: 76px; }
+.row-nav { display: flex; gap: 8px; flex: none; }
+.arrow {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--line); background: #fff; color: var(--ink-soft);
+  font-size: 19px; line-height: 1; cursor: pointer;
+}
+.arrow:hover:not(:disabled) { border-color: var(--teal); color: var(--teal-dark); }
+.arrow:disabled { opacity: .3; cursor: default; }
+.arrow:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.row-nav.hidden { display: none; }
 
-.failures { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
-.failures h3 { font-size: 22px; font-weight: 700; margin: 0 0 4px; }
-.failures .fig-row { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+/* the horizontally scrolling filmstrip: wheel over it moves through the clips */
+.strip-wrap { position: relative; }
+.strip-wrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 56px;
+  background: linear-gradient(to right, transparent, var(--bg-alt));
+  pointer-events: none; opacity: 0; transition: opacity .2s;
+}
+.strip-wrap.more::after { opacity: 1; }
+
+.strip {
+  /* No scroll-behavior: smooth here — it would animate every wheel tick and
+     feel laggy. The arrow buttons ask for smooth scrolling explicitly. */
+  display: flex; gap: 20px; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-bottom: 10px; scrollbar-width: thin;
+}
+.strip::-webkit-scrollbar { height: 6px; }
+.strip::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+.clip { flex: 0 0 440px; max-width: 88vw; scroll-snap-align: start; }
+.clip-wide { flex-basis: 780px; }
+.clip video {
+  width: 100%; aspect-ratio: 16 / 9; display: block;
+  border-radius: 10px; background: #000; object-fit: contain;
+}
+.clip .media-slot { min-height: 0; aspect-ratio: 16 / 9; }
+.clip figcaption { font-size: 14px; margin-top: 8px; }
 
 /* ------------------------------ placeholders ------------------------------ */
 .media-slot { min-height: 190px; }
-.media-slot.portrait { min-height: 420px; }
+
 
 .slot-box {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -280,8 +305,13 @@ figcaption {
 
 /* ------------------------------ responsive ------------------------------ */
 @media (max-width: 900px) {
-  .video-grid { grid-template-columns: 1fr; }
-  .sticky-wrap { position: static; }
+  .clip, .clip-wide { flex-basis: 88vw; }
+  .row-head { align-items: flex-start; }
   .nav-links { display: none; }
   .section { padding: 48px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .strip { scroll-snap-type: none; }
 }

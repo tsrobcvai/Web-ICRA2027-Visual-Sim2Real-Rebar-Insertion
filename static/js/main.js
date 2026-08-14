@@ -37,7 +37,7 @@
       v.src = src;
       v.muted = true;
       v.playsInline = true;
-      v.loop = !slot.classList.contains("portrait");   // long take: play once, with controls
+      v.loop = !slot.hasAttribute("data-once");   // long take: play once, with controls
       v.controls = true;
       v.preload = "metadata";
       v.addEventListener("loadeddata", function () { swap(slot, v); observe(v); }, { once: true });
@@ -75,7 +75,8 @@
   }
 
   /* Only let a clip run while it is on screen — keeps a page full of
-     videos from pinning the CPU. Long takes are left to the user. */
+     videos from pinning the CPU. A clip scrolled out of its strip counts as
+     off screen too, since the strip clips it. Long takes are left to the user. */
   function observe(v) {
     if (!v.loop || !("IntersectionObserver" in window)) return;
     new IntersectionObserver(function (entries) {
@@ -83,6 +84,57 @@
         if (e.isIntersecting) { v.play().catch(function () {}); }
         else { v.pause(); }
       });
-    }, { threshold: 0.25 }).observe(v);
+    }, { threshold: 0.55 }).observe(v);
   }
+
+  /* ----------------------------------------------------------------
+     Filmstrips. Each demo row scrolls horizontally: the wheel moves
+     through its clips, and hands scrolling back to the page once the
+     strip hits either end, so it never traps the reader.
+     ---------------------------------------------------------------- */
+  document.querySelectorAll(".demo-row").forEach(function (row) {
+    var wrap = row.querySelector(".strip-wrap");
+    var strip = row.querySelector(".strip");
+    var nav = row.querySelector(".row-nav");
+    var arrows = row.querySelectorAll(".arrow");
+    if (!strip) return;
+
+    function step() {
+      var clip = strip.querySelector(".clip");
+      return clip ? clip.offsetWidth + 20 : strip.clientWidth * 0.8;
+    }
+    function maxScroll() { return strip.scrollWidth - strip.clientWidth; }
+
+    function sync() {
+      var max = maxScroll();
+      var at = strip.scrollLeft;
+      nav.classList.toggle("hidden", max < 2);
+      wrap.classList.toggle("more", at < max - 2);
+      arrows[0].disabled = at < 2;
+      arrows[1].disabled = at > max - 2;
+    }
+
+    arrows.forEach(function (b) {
+      b.addEventListener("click", function () {
+        strip.scrollBy({ left: Number(b.dataset.dir) * step(), behavior: "smooth" });
+      });
+    });
+
+    strip.addEventListener("wheel", function (e) {
+      var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      var max = maxScroll();
+      if (!d || max < 2) return;
+      var at = strip.scrollLeft;
+      if ((d < 0 && at < 2) || (d > 0 && at > max - 2)) return;  // at an end: let the page scroll
+      e.preventDefault();
+      strip.scrollLeft = at + d;
+    }, { passive: false });
+
+    strip.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    sync();
+    // Clips load asynchronously, so the strip's width settles late.
+    setTimeout(sync, 400);
+    setTimeout(sync, 2000);
+  });
 })();

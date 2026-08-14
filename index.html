@@ -168,89 +168,117 @@
     <h2>Policy Demos</h2>
     <p class="lead narrow-p">The same frozen policy on real hardware, played at 1&times;.</p>
 
-    <div class="video-grid">
-
-      <!-- ---------- Column 1: geometry robustness ---------- -->
-      <div class="video-col">
-        <div class="col-head">
-          <div class="col-k">varying the part</div>
+    <div class="demo-row row-geometry">
+      <div class="row-head">
+        <div class="row-title">
           <h3>Robust to geometry</h3>
           <p>Bars differing in length, width, bend angle and hook shape. One policy, no retraining.</p>
         </div>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/geometry_01.mp4" data-label="Geometry 1"></div>
-          <figcaption>Nominal design, within tolerance</figcaption>
-        </figure>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/geometry_02.mp4" data-label="Geometry 2"></div>
-          <figcaption>Shorter bar / tolerance extreme</figcaption>
-        </figure>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/geometry_03.mp4" data-label="Geometry 3"></div>
-          <figcaption>Wider bar / tolerance extreme</figcaption>
-        </figure>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/geometry_04.mp4" data-label="Geometry 4"></div>
-          <figcaption>Unseen design, zero-shot</figcaption>
-        </figure>
+        <div class="row-nav">
+          <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
+          <button class="arrow" type="button" data-dir="1" aria-label="Next clip">&#8250;</button>
+        </div>
       </div>
+      <div class="strip-wrap">
+        <div class="strip">
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/geometry_01.mp4" data-label="Geometry 1"></div>
+            <figcaption>Nominal design, within tolerance</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/geometry_02.mp4" data-label="Geometry 2"></div>
+            <figcaption>Shorter bar / tolerance extreme</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/geometry_03.mp4" data-label="Geometry 3"></div>
+            <figcaption>Wider bar / tolerance extreme</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/geometry_04.mp4" data-label="Geometry 4"></div>
+            <figcaption>Unseen design, zero-shot</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
 
-      <!-- ---------- Column 2: external disturbance ---------- -->
-      <div class="video-col">
-        <div class="col-head">
-          <div class="col-k">perturbing the scene</div>
+    <div class="demo-row row-disturbance">
+      <div class="row-head">
+        <div class="row-title">
           <h3>Robust to disturbance</h3>
           <p>The bar is pushed and knocked mid-insertion. The policy re-approaches and seats it.</p>
         </div>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/disturbance_01.mp4" data-label="Disturbance 1"></div>
-          <figcaption>Push during approach</figcaption>
-        </figure>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/disturbance_02.mp4" data-label="Disturbance 2"></div>
-          <figcaption>Pull mid-insertion</figcaption>
-        </figure>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/disturbance_03.mp4" data-label="Disturbance 3"></div>
-          <figcaption>Rack nudged out of place</figcaption>
-        </figure>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/disturbance_04.mp4" data-label="Disturbance 4"></div>
-          <figcaption>Repeated disturbance, recovery</figcaption>
-        </figure>
+        <div class="row-nav">
+          <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
+          <button class="arrow" type="button" data-dir="1" aria-label="Next clip">&#8250;</button>
+        </div>
       </div>
+      <div class="strip-wrap">
+        <div class="strip">
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/disturbance_01.mp4" data-label="Disturbance 1"></div>
+            <figcaption>Push during approach</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/disturbance_02.mp4" data-label="Disturbance 2"></div>
+            <figcaption>Pull mid-insertion</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/disturbance_03.mp4" data-label="Disturbance 3"></div>
+            <figcaption>Rack nudged out of place</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/disturbance_04.mp4" data-label="Disturbance 4"></div>
+            <figcaption>Repeated disturbance, recovery</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
 
-      <!-- ---------- Column 3: long uncut run ---------- -->
-      <div class="video-col">
-        <div class="col-head">
-          <div class="col-k">running it long</div>
+    <div class="demo-row row-long">
+      <div class="row-head">
+        <div class="row-title">
           <h3>Continuous operation</h3>
           <p>One uncut take: grasp, insert, retract, bar after bar.</p>
         </div>
-        <div class="sticky-wrap">
-          <figure class="vid long">
-            <div class="media-slot video portrait" data-video="static/videos/long_run.mp4" data-label="Long continuous run"
+        <div class="row-nav">
+          <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
+          <button class="arrow" type="button" data-dir="1" aria-label="Next clip">&#8250;</button>
+        </div>
+      </div>
+      <div class="strip-wrap">
+        <div class="strip">
+          <figure class="clip clip-wide">
+            <div class="media-slot video" data-video="static/videos/long_run.mp4" data-once
+                 data-label="Long continuous run"
                  data-hint="One long clip, e.g. 3&ndash;10&nbsp;min of back-to-back grasp&ndash;insert cycles."></div>
             <figcaption>Uncut grasp&ndash;insert loop <span class="tbd-tag small">duration TBD</span></figcaption>
           </figure>
         </div>
       </div>
-
     </div>
 
-    <!-- Failure cases: kept as an explicit, honest placeholder section. -->
-    <div class="failures">
-      <h3>Failure cases</h3>
-      <p class="narrow-p">Shown unedited.</p>
-      <div class="fig-row">
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/failure_01.mp4" data-label="Failure 1"></div>
-          <figcaption>Failure mode 1 <span class="tbd-tag small">TBD</span></figcaption>
-        </figure>
-        <figure class="vid">
-          <div class="media-slot video" data-video="static/videos/failure_02.mp4" data-label="Failure 2"></div>
-          <figcaption>Failure mode 2 <span class="tbd-tag small">TBD</span></figcaption>
-        </figure>
+    <div class="demo-row row-failure">
+      <div class="row-head">
+        <div class="row-title">
+          <h3>Failure cases</h3>
+          <p>Shown unedited.</p>
+        </div>
+        <div class="row-nav">
+          <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
+          <button class="arrow" type="button" data-dir="1" aria-label="Next clip">&#8250;</button>
+        </div>
+      </div>
+      <div class="strip-wrap">
+        <div class="strip">
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/failure_01.mp4" data-label="Failure 1"></div>
+            <figcaption>Failure mode 1 <span class="tbd-tag small">TBD</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media-slot video" data-video="static/videos/failure_02.mp4" data-label="Failure 2"></div>
+            <figcaption>Failure mode 2 <span class="tbd-tag small">TBD</span></figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </div>
