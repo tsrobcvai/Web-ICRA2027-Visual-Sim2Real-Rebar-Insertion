@@ -206,7 +206,6 @@ figcaption {
 
 /* ------------------------------ placeholders ------------------------------ */
 .media-slot { min-height: 190px; }
-.media-slot.tall { min-height: 300px; }
 .media-slot.portrait { min-height: 420px; }
 
 .slot-box {

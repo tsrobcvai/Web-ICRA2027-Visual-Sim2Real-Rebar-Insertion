@@ -41,10 +41,10 @@ limit — if `long_run.mp4` gets big, host it on YouTube and embed instead.
 
 | File | Where it appears | Status |
 | --- | --- | --- |
-| `background.svg` (or `.png`) | Background section | **waiting for upload** — the vector figure |
-| `teaser.png` | not on the page — only the `og:image` social preview | draft, copied from the paper |
+| `motivation.png` | Background, left | final — paper Fig. 1 (`figures_src/motivation.png`) |
+| `Picture2.svg` | Background, right | final — real on-site rebar, showing appearance and tolerance spread |
 | `framework.png` | Training framework | draft, copied from the paper (`figures_src/pipeline_preview.png`) |
-| `motivation.png`, `rebar_family.png` | Background section | draft, copied from the paper |
+| `teaser.png` | not on the page — only the `og:image` social preview | draft, copied from the paper |
 
 Anything marked `draft` in the page is a provisional figure lifted from the LaTeX repo
 (`/n/fs/rebar/isaaclab/repos/LaTeX-ICRA2027-Visual-Sim2Real-Rebar-Insertion/figures_src/`).
