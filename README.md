@@ -31,8 +31,8 @@ reorder the strip, rename the files — the HTML never changes:
 | --- | --- |
 | `rollout_01.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p372_y0p017_z0p277_20260722_124237.mp4` |
 | `rollout_02.mp4` | `student_8cam-mdepth-slotseg_model3000__ee_x0p407_y0p044_z0p262_20260725_140540.mp4` |
-| `rollout_03.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p404_y0p021_z0p265_20260718_112222.mp4` |
-| `rollout_04.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p408_y0p046_z0p267_20260718_120240.mp4` |
+| `rollout_03.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p408_y0p046_z0p267_20260718_120240.mp4` |
+| `rollout_04.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p404_y0p021_z0p265_20260718_112222.mp4` |
 
 Each row is a horizontal filmstrip: the wheel (or the arrow buttons, or a swipe)
 moves through that row's clips. A row whose clips are wider than the window **wraps
