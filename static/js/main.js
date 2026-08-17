@@ -206,8 +206,7 @@
     box.className = "slot-box";
     box.innerHTML =
       '<div class="slot-icon">' + (isVideo ? "&#9654;" : "&#9633;") + "</div>" +
-      '<div class="slot-title">' + label + " &middot; " +
-        (slot.getAttribute("data-state") || "missing") + "</div>" +
+      '<div class="slot-title">' + label + " &middot; missing</div>" +
       (path ? '<div class="slot-path">' + path + "</div>" : "") +
       (hint ? '<div class="slot-hint">' + hint + "</div>" : "");
     slot.innerHTML = "";
