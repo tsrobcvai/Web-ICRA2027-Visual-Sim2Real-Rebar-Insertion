@@ -21,7 +21,6 @@ file to the right path.** No HTML editing needed.
 | --- | --- |
 | `sim_01.mp4` … `sim_04.mp4` | **In Simulation** section — waiting for upload |
 | `rollout_01.mp4` … `rollout_04.mp4` | Row 1 — rollouts across initial states and bars ✅ **in place** |
-| `long_run.mp4` | Row 2 — one long uncut grasp→insert take |
 
 The four rollouts came from `static/videos/` under their original names (all
 1280×720, 10 fps, 1.6–6.9 s). The number is the display order in the row, so to
@@ -46,8 +45,9 @@ the 440 px clip width that means roughly **three or more clips before a row star
 looping**. Adding a clip is just another `<figure class="clip">`; the cloning, arrows
 and edge fade pick it up on their own.
 
-Short clips autoplay muted on loop and pause when scrolled out of view;
-`long_run.mp4` carries `data-once` so it plays through with controls instead.
+Short clips autoplay muted on loop and pause when scrolled out of view.
+The Continuous-operation row carries no clip yet -- it shows an `in progress` chip
+instead of an empty slot.
 Clips are boxed at 16:9 and letterboxed on black, so mixed aspect ratios still line up.
 
 **Encoding** — keep them small so the page loads on a conference wifi:
