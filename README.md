@@ -19,10 +19,20 @@ file to the right path.** No HTML editing needed.
 
 | File | Where it appears |
 | --- | --- |
-| `geometry_01.mp4` … `geometry_04.mp4` | Row 1 — robustness to rebar geometry |
-| `disturbance_01.mp4` … `disturbance_04.mp4` | Row 2 — robustness to external disturbance |
-| `long_run.mp4` | Row 3 — one long uncut grasp→insert take |
-| `failure_01.mp4`, `failure_02.mp4` | Row 4 — failure cases |
+| `sim_01.mp4` … `sim_04.mp4` | **In Simulation** section — waiting for upload |
+| `rollout_01.mp4` … `rollout_04.mp4` | Row 1 — rollouts across initial states and bars ✅ **in place** |
+| `long_run.mp4` | Row 2 — one long uncut grasp→insert take |
+| `failure_01.mp4`, `failure_02.mp4` | Row 3 — failure cases |
+
+The four rollouts came from `static/videos/` under their original names, renamed
+chronologically (all 1280×720, 10 fps, 1.6–6.9 s):
+
+| now | was |
+| --- | --- |
+| `rollout_01.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p404_y0p021_z0p265_20260718_112222.mp4` |
+| `rollout_02.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p408_y0p046_z0p267_20260718_120240.mp4` |
+| `rollout_03.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p372_y0p017_z0p277_20260722_124237.mp4` |
+| `rollout_04.mp4` | `student_8cam-mdepth-slotseg_model3000__ee_x0p407_y0p044_z0p262_20260725_140540.mp4` |
 
 Each row is a horizontal filmstrip: the wheel (or the arrow buttons, or a swipe)
 moves through that row's clips. A row whose clips are wider than the window **wraps

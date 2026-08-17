@@ -20,6 +20,8 @@
 
   --maxw:       1180px;
   --radius:     12px;
+  /* the ground a filmstrip's right-edge fade blends into; .section.alt overrides it */
+  --fade-to:    #ffffff;
 }
 
 * { box-sizing: border-box; }
@@ -134,7 +136,7 @@ a { color: var(--teal-dark); }
 
 /* ------------------------------ sections ------------------------------ */
 .section { padding: 66px 0; border-bottom: 1px solid var(--line); }
-.section.alt { background: var(--bg-alt); }
+.section.alt { background: var(--bg-alt); --fade-to: var(--bg-alt); }
 .section h2 {
   font-size: 30px; font-weight: 800; letter-spacing: -.015em;
   margin: 0 0 22px;
@@ -200,8 +202,7 @@ figcaption {
   display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
   border-top: 3px solid var(--teal); padding-top: 12px; margin-bottom: 16px;
 }
-.row-disturbance .row-head { border-top-color: var(--violet); }
-.row-long        .row-head { border-top-color: var(--amber); }
+.row-long        .row-head { border-top-color: var(--violet); }
 .row-failure     .row-head { border-top-color: var(--ink-faint); }
 .row-title h3 { margin: 0 0 4px; font-size: 21px; font-weight: 700; }
 .row-title p  { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
@@ -221,7 +222,7 @@ figcaption {
 .strip-wrap { position: relative; }
 .strip-wrap::after {
   content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 56px;
-  background: linear-gradient(to right, transparent, var(--bg-alt));
+  background: linear-gradient(to right, transparent, var(--fade-to));
   pointer-events: none; opacity: 0; transition: opacity .2s;
 }
 .strip-wrap.more::after { opacity: 1; }

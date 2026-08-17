@@ -24,6 +24,7 @@
     <div class="nav-links">
       <a href="#background">Background</a>
       <a href="#framework">Framework</a>
+      <a href="#sim">Simulation</a>
       <a href="#videos">Real World</a>
       <a href="#takeaways">Takeaways</a>
       <a href="#bibtex">BibTeX</a>
@@ -163,17 +164,17 @@
   </div>
 </section>
 
-<!-- ============================== VIDEOS ============================== -->
-<section class="section alt" id="videos">
+<!-- ============================== SIMULATION ============================== -->
+<section class="section alt" id="sim">
   <div class="container">
-    <h2>Real-World Demos</h2>
-    <p class="lead narrow-p">The same frozen policy, straight out of simulation, played at 1&times;.</p>
+    <h2>In Simulation</h2>
+    <p class="lead narrow-p">The student policy inside the simulator it was trained in.</p>
 
-    <div class="demo-row row-geometry">
+    <div class="demo-row row-sim">
       <div class="row-head">
         <div class="row-title">
-          <h3>Robust to geometry</h3>
-          <p>Bars differing in length, width, bend angle and hook shape. One policy, no retraining.</p>
+          <h3>Simulated rollouts</h3>
+          <p>Procedurally generated bars and racks, randomized appearance and initial states.</p>
         </div>
         <div class="row-nav">
           <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
@@ -183,30 +184,38 @@
       <div class="strip-wrap">
         <div class="strip">
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/geometry_01.mp4" data-label="Geometry 1"></div>
-            <figcaption>Nominal design, within tolerance</figcaption>
+            <div class="media-slot video" data-video="static/videos/sim_01.mp4" data-label="Sim 1"></div>
+            <figcaption>Sim rollout 1</figcaption>
           </figure>
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/geometry_02.mp4" data-label="Geometry 2"></div>
-            <figcaption>Shorter bar / tolerance extreme</figcaption>
+            <div class="media-slot video" data-video="static/videos/sim_02.mp4" data-label="Sim 2"></div>
+            <figcaption>Sim rollout 2</figcaption>
           </figure>
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/geometry_03.mp4" data-label="Geometry 3"></div>
-            <figcaption>Wider bar / tolerance extreme</figcaption>
+            <div class="media-slot video" data-video="static/videos/sim_03.mp4" data-label="Sim 3"></div>
+            <figcaption>Sim rollout 3</figcaption>
           </figure>
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/geometry_04.mp4" data-label="Geometry 4"></div>
-            <figcaption>Unseen design, zero-shot</figcaption>
+            <div class="media-slot video" data-video="static/videos/sim_04.mp4" data-label="Sim 4"></div>
+            <figcaption>Sim rollout 4</figcaption>
           </figure>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="demo-row row-disturbance">
+<!-- ============================== VIDEOS ============================== -->
+<section class="section" id="videos">
+  <div class="container">
+    <h2>Real-World Demos</h2>
+    <p class="lead narrow-p">The same frozen policy, straight out of simulation, played at 1&times;.</p>
+
+    <div class="demo-row row-rollouts">
       <div class="row-head">
         <div class="row-title">
-          <h3>Robust to disturbance</h3>
-          <p>The bar is pushed and knocked mid-insertion. The policy re-approaches and seats it.</p>
+          <h3>Different initial states, different bars</h3>
+          <p>Real-robot rollouts of the same frozen policy &mdash; a new arm pose and a new bar each time.</p>
         </div>
         <div class="row-nav">
           <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
@@ -216,20 +225,20 @@
       <div class="strip-wrap">
         <div class="strip">
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/disturbance_01.mp4" data-label="Disturbance 1"></div>
-            <figcaption>Push during approach</figcaption>
+            <div class="media-slot video" data-video="static/videos/rollout_01.mp4" data-label="Rollout 1"></div>
+            <figcaption>Rollout 1</figcaption>
           </figure>
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/disturbance_02.mp4" data-label="Disturbance 2"></div>
-            <figcaption>Pull mid-insertion</figcaption>
+            <div class="media-slot video" data-video="static/videos/rollout_02.mp4" data-label="Rollout 2"></div>
+            <figcaption>Rollout 2</figcaption>
           </figure>
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/disturbance_03.mp4" data-label="Disturbance 3"></div>
-            <figcaption>Rack nudged out of place</figcaption>
+            <div class="media-slot video" data-video="static/videos/rollout_03.mp4" data-label="Rollout 3"></div>
+            <figcaption>Rollout 3</figcaption>
           </figure>
           <figure class="clip">
-            <div class="media-slot video" data-video="static/videos/disturbance_04.mp4" data-label="Disturbance 4"></div>
-            <figcaption>Repeated disturbance, recovery</figcaption>
+            <div class="media-slot video" data-video="static/videos/rollout_04.mp4" data-label="Rollout 4"></div>
+            <figcaption>Rollout 4</figcaption>
           </figure>
         </div>
       </div>
@@ -286,7 +295,7 @@
 </section>
 
 <!-- ============================== TAKEAWAYS ============================== -->
-<section class="section" id="takeaways">
+<section class="section alt" id="takeaways">
   <div class="container">
     <h2>Takeaways</h2>
     <p class="lead narrow-p">What the experiments actually showed.</p>
@@ -296,7 +305,7 @@
 </section>
 
 <!-- ============================== BIBTEX ============================== -->
-<section class="section alt" id="bibtex">
+<section class="section" id="bibtex">
   <div class="container narrow">
     <h2>BibTeX</h2>
     <div class="media-slot" data-label="BibTeX entry"

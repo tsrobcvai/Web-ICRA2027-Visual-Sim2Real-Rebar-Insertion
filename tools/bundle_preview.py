@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Bundle index.html into a single self-contained file for previewing.
 
-Inlines the stylesheet and script and base64-embeds any image that exists,
-so the page can be opened (or published) without the static/ tree next to it.
-Videos are NOT embedded -- their slots fall back to the "missing" placeholder,
-which is what an un-filled slot looks like on the real site anyway.
+Inlines the stylesheet and script and base64-embeds every image and video that
+exists, so the page can be opened (or published) without the static/ tree next
+to it. Media is embedded until BUDGET is spent; anything skipped falls back to
+the "missing" placeholder and is reported on stdout.
 
     python3 tools/bundle_preview.py [out.html]
 """
@@ -22,23 +22,35 @@ css = (ROOT / "static/css/style.css").read_text()
 js = (ROOT / "static/js/main.js").read_text()
 
 
+BUDGET = 12_000_000        # keep the published page under the 16 MB artifact cap
+spent = 0
+skipped: list[str] = []
+
+
 def data_uri(rel: str) -> str | None:
+    global spent
     p = ROOT / rel
     if not p.is_file():
         return None
+    cost = p.stat().st_size * 4 // 3
+    if spent + cost > BUDGET:
+        skipped.append(rel)
+        return None
+    spent += cost
     mime = mimetypes.guess_type(p.name)[0] or "application/octet-stream"
     return f"data:{mime};base64," + base64.b64encode(p.read_bytes()).decode()
 
 
-def embed_imgs(m: re.Match) -> str:
+def embed(attr: str):
     # "|" is the candidate separator, not "," -- a base64 data: URI contains a comma.
-    out = []
-    for cand in m.group(1).split("|"):
-        out.append(data_uri(cand.strip()) or cand.strip())
-    return 'data-img="' + "|".join(out) + '"'
+    def sub(m: re.Match) -> str:
+        out = [data_uri(c.strip()) or c.strip() for c in m.group(1).split("|")]
+        return f'{attr}="' + "|".join(out) + '"'
+    return sub
 
 
-html = re.sub(r'data-img="([^"]+)"', embed_imgs, html)
+html = re.sub(r'data-img="([^"]+)"', embed("data-img"), html)
+html = re.sub(r'data-video="([^"]+)"', embed("data-video"), html)
 html = re.sub(r'<link rel="stylesheet"[^>]*>', f"<style>\n{css}\n</style>", html)
 html = re.sub(r'<script src="[^"]*"></script>', f"<script>\n{js}\n</script>", html)
 
@@ -50,3 +62,5 @@ style = re.search(r"<style>.*?</style>", head, re.S).group(0)
 
 OUT.write_text(title + "\n" + style + "\n" + body)
 print(f"wrote {OUT}  ({OUT.stat().st_size / 1e6:.1f} MB)")
+if skipped:
+    print("over budget, left as placeholders:", ", ".join(skipped))
