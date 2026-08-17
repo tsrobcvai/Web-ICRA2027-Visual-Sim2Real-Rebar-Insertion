@@ -171,10 +171,14 @@ figure { margin: 0; }
 figcaption {
   font-size: 14.5px; color: var(--ink-soft); margin-top: 10px; line-height: 1.5;
 }
-.fig-row {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px; margin-top: 26px;
-}
+/* A justified figure row: each figure takes width in proportion to its own
+   aspect ratio, so every image in the row renders at the SAME height and no
+   figure leaves a gap under it. --r is written by main.js once the image
+   reports its natural size, so swapping a figure re-balances the row on its
+   own. Equal-width columns would make a 1.42:1 figure 62% taller than a
+   2.30:1 one — that gap is what this avoids. */
+.fig-row { display: flex; gap: 24px; margin-top: 26px; align-items: flex-start; }
+.fig-row .fig { flex: var(--r, 1) 1 0; margin-top: 0; min-width: 0; }
 
 /* phase cards */
 .phases {
@@ -307,6 +311,8 @@ figcaption {
 /* ------------------------------ responsive ------------------------------ */
 @media (max-width: 900px) {
   .clip, .clip-wide { flex-basis: 88vw; }
+  .fig-row { display: block; }                 /* the inline --r no longer applies */
+  .fig-row .fig + .fig { margin-top: 24px; }
   .row-head { align-items: flex-start; }
   .nav-links { display: none; }
   .section { padding: 48px 0; }

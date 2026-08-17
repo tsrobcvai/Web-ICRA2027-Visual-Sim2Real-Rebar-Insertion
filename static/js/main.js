@@ -175,10 +175,21 @@
       probe.onload = function () {
         probe.alt = slot.getAttribute("data-label") || "";
         swap(slot, probe);
+        justify(slot, probe);
       };
       probe.onerror = function () { tryNext(slot, list, i + 1, isVideo); };
       probe.src = src;
     }
+  }
+
+  /* Inside a .fig-row, give each figure a flex weight equal to its aspect
+     ratio. Widths then come out proportional to the ratios, which makes every
+     image in the row exactly the same height — no gap under the wider one. */
+  function justify(slot, img) {
+    var fig = slot.closest(".fig");
+    if (!fig || !fig.parentElement.classList.contains("fig-row")) return;
+    if (!img.naturalWidth || !img.naturalHeight) return;
+    fig.style.setProperty("--r", img.naturalWidth / img.naturalHeight);
   }
 
   function swap(slot, el) {
