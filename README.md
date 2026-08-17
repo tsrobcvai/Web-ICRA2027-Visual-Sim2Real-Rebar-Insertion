@@ -22,7 +22,6 @@ file to the right path.** No HTML editing needed.
 | `sim_01.mp4` … `sim_04.mp4` | **In Simulation** section — waiting for upload |
 | `rollout_01.mp4` … `rollout_04.mp4` | Row 1 — rollouts across initial states and bars ✅ **in place** |
 | `long_run.mp4` | Row 2 — one long uncut grasp→insert take |
-| `failure_01.mp4`, `failure_02.mp4` | Row 3 — failure cases |
 
 The four rollouts came from `static/videos/` under their original names (all
 1280×720, 10 fps, 1.6–6.9 s). The number is the display order in the row, so to

@@ -207,7 +207,6 @@ figcaption {
   border-top: 3px solid var(--teal); padding-top: 12px; margin-bottom: 16px;
 }
 .row-long        .row-head { border-top-color: var(--violet); }
-.row-failure     .row-head { border-top-color: var(--ink-faint); }
 .row-title h3 { margin: 0 0 4px; font-size: 21px; font-weight: 700; }
 .row-title p  { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
 
