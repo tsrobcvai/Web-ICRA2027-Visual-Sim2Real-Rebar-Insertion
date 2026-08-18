@@ -22,7 +22,7 @@ css = (ROOT / "static/css/style.css").read_text()
 js = (ROOT / "static/js/main.js").read_text()
 
 
-BUDGET = 12_000_000        # keep the published page under the 16 MB artifact cap
+BUDGET = 14_000_000        # keep the published page under the 16 MB artifact cap
 spent = 0
 skipped: list[str] = []
 
