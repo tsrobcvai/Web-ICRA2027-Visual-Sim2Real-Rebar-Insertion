@@ -1,5 +1,5 @@
 /* ============================================================
-   Rebarbot2 project page.
+   RebarSim project page.
 
    Two jobs, in this order:
 

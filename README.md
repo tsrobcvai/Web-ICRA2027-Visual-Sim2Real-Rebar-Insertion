@@ -1,4 +1,4 @@
-# Rebarbot2 — project page
+# RebarSim — project page
 
 Static project website for **"Visual Sim-to-Real Learning for Robotic Insertion under
 Geometric Variations: Application to Rebar Installation"** (ICRA 2027 submission).
