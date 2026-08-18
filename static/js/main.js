@@ -1,5 +1,5 @@
 /* ============================================================
-   GRIT project page.
+   Rebarbot2 project page.
 
    Two jobs, in this order:
 
