@@ -142,28 +142,45 @@ For a single file you can email or publish, `python3 tools/bundle_preview.py` wr
 base64'd inline. It embeds the cheap assets first and reports whatever it had to skip,
 so a squeeze costs the page a video rather than its typography.
 
-## Deploying to GitHub Pages
+## Publishing
 
-**Current status:** pushed to
-`tsrobcvai/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion` (**private**), Pages **not**
-enabled — deliberately, so nothing is reachable during double-blind review. GitHub
-Pages serves to a *public* URL even from a private repo, so enabling it now would
-defeat the point.
+Two repos, on purpose:
 
-When the paper is accepted (or when an anonymous host is ready), one flip:
+| | repo | visibility | holds |
+| --- | --- | --- | --- |
+| **source** | `tsrobcvai/Web-ICRA2027-…-Rebar-Insertion` | private | this tree — full history, `tools/`, this README |
+| **site** | `rebarsim/rebarsim.github.io` | public | the built page only, served at <https://rebarsim.github.io/> |
+
+The split is what keeps the page anonymous while the paper is under review. The
+public repo is a **user site** owned by a neutral org, so the URL carries no name,
+and its two commits are authored `Anonymous <anonymous@users.noreply.github.com>`.
+
+> **Never `git push pages main`.** This repo's history is authored under a real
+> name and email, and the site repo is public — pushing it there would undo the
+> anonymity the split exists to provide. Publish a squashed, anonymous commit
+> instead:
 
 ```bash
-gh repo edit tsrobcvai/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion --visibility public --accept-visibility-change-consequences
-gh api -X POST repos/tsrobcvai/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion/pages \
-  -f 'source[branch]=main' -f 'source[path]=/'
+git remote add pages git@github.com:rebarsim/rebarsim.github.io.git   # once
+git fetch pages
+
+git checkout -B publish pages/main
+git read-tree -u --reset main          # take this repo's tree...
+git rm -r --cached -q tools .gitignore # ...minus the dev-only bits
+rm -rf tools .gitignore
+git checkout pages/main -- README.md   # keep the short anonymous README
+
+git commit --author="Anonymous <anonymous@users.noreply.github.com>" -m "Update project page"
+git push pages publish:main
+git checkout main
 ```
 
-Then the site is at `https://<owner>.github.io/<repo>/`.
+GitHub rebuilds within a minute or so of the push. `.nojekyll` is already present
+so the files are served as-is.
 
-For a bare `https://<name>.github.io/` URL, the repo must be named exactly
-`<name>.github.io` and owned by that user/organisation.
-
-`.nojekyll` is already present so GitHub serves the files as-is.
+Only the site repo needs Pages enabled; the private source repo stays dark. If the
+source repo is ever made public, scrub this README's absolute paths and squash the
+history first — both name the authors.
 
 ## Credits
 
