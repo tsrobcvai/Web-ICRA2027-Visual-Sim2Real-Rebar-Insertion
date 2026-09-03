@@ -1,200 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RebarSim — Visual Sim-to-Real Learning for Robotic Rebar Insertion</title>
-<meta name="description" content="An end-to-end visuomotor policy that inserts rebar of varying geometry at over 95% success, trained entirely in simulation with zero real-world data.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="An end-to-end visuomotor policy that inserts rebar of varying geometry at over 90% success, trained entirely in simulation with zero real-world data.">
+  <meta name="keywords" content="Robotics, Sim-to-Real, Visuomotor Policy, Insertion, Rebar, Construction Robotics">
+  <title>
+    RebarSim: Visual Sim-to-Real Learning for Robotic Insertion under Geometric Variations
+  </title>
 
-<!-- Social preview (update the URL once the site is live) -->
-<meta property="og:title" content="RebarSim — Visual Sim-to-Real Rebar Insertion">
-<meta property="og:description" content="One end-to-end visuomotor policy. Any rebar size. >95% real-world success. Zero real-world data.">
-<meta property="og:image" content="static/images/teaser.png">
-<meta property="og:type" content="website">
+  <!-- Social preview (update the URL once the site is live) -->
+  <meta property="og:title" content="RebarSim &mdash; Visual Sim-to-Real Rebar Insertion">
+  <meta property="og:description"
+    content="One end-to-end visuomotor policy. Any rebar size. >90% real-world success. Zero real-world data.">
+  <meta property="og:image" content="static/images/teaser.png">
+  <meta property="og:type" content="website">
 
-<link rel="stylesheet" href="static/css/style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <!-- Everything below is vendored into static/ -- the page needs no network. -->
+  <link rel="stylesheet" href="./static/css/fonts.css">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
 </head>
+
 <body>
 
-<!-- ============================== NAV ============================== -->
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="nav-brand" href="#top">RebarSim</a>
-    <div class="nav-links">
-      <a href="#background">Background</a>
-      <a href="#framework">Framework</a>
-      <a href="#sim">Simulation</a>
-      <a href="#videos">Real World</a>
-      <a href="#takeaways">Takeaways</a>
-      <a href="#bibtex">BibTeX</a>
+  <!-- ============================== HERO ============================== -->
+  <section class="hero is-link is-fullheight video" id="top" style="overflow: hidden; position: relative;">
+    <div class="hero-video" style="height: 100%; width: 177.77777778vh; min-width: 100%; min-height: 56.25vw;">
+      <video playsinline autoplay muted loop poster="./static/images/hero-poster.jpg">
+        <source src="./static/videos/hero.mp4" type="video/mp4">
+      </video>
     </div>
-  </div>
-</nav>
-
-<!-- ============================== HERO ============================== -->
-<header class="hero" id="top">
-  <div class="container">
-
-    <h1 class="title">
-      Visual Sim-to-Real Learning for Robotic Insertion under Geometric Variations:
-      <span class="title-sub">Application to Rebar Installation</span>
-    </h1>
-
-    <!-- TODO(user): replace with the real author list after the double-blind review period. -->
-    <div class="authors tbd-inline">
-      <span class="tbd-tag">TBD</span>
-      Anonymous Authors
+    <div class="hero-video is-hidden-tablet is-inline-block-mobile"
+      style="height: 154.5vw; width: 100%; min-width: 64.72vh; min-height: 100%;">
+      <video playsinline autoplay muted loop poster="./static/images/hero-poster.jpg">
+        <source src="./static/videos/hero-mobile.mp4" type="video/mp4">
+      </video>
     </div>
-    <div class="affiliations tbd-inline">
-      <span class="tbd-tag">TBD</span> Affiliations withheld for review
-    </div>
-    <!-- Link buttons. Anything without a URL yet renders as a disabled "soon" chip. -->
-    <div class="buttons">
-      <a class="btn btn-disabled" href="#" aria-disabled="true">📄 Paper <span class="soon">soon</span></a>
-      <a class="btn btn-disabled" href="#" aria-disabled="true">📚 arXiv <span class="soon">soon</span></a>
-      <a class="btn btn-disabled" href="#" aria-disabled="true">🎬 Video <span class="soon">soon</span></a>
-      <a class="btn btn-disabled" href="#" aria-disabled="true">💻 Code <span class="soon">soon</span></a>
-    </div>
+    <div class="overlay"></div>
 
-    <!-- ---------- the one-line claim ---------- -->
-    <p class="pitch">
-      One <em>end-to-end</em> visuomotor policy inserts
-      <span class="hl">rebar of varying geometry</span> at
-      <span class="hl">over 95&#8202;% success</span> on real hardware, trained
-      <span class="hl">only in simulation</span>.
-    </p>
-
-    <div class="stats">
-      <div class="stat"><div class="stat-num">&gt;95&#8202;%</div><div class="stat-lab">real-world success, <strong>across diverse rebar geometries</strong></div></div>
-      <div class="stat"><div class="stat-num">0</div><div class="stat-lab">real-world training samples</div></div>
-      <div class="stat"><div class="stat-num">1.3&#8202;mm</div><div class="stat-lab">slot clearance</div></div>
-    </div>
-
-  </div>
-</header>
-
-<!-- ============================== BACKGROUND ============================== -->
-<section class="section alt" id="background">
-  <div class="container">
-    <h2>Background</h2>
-    <p class="lead narrow-p">
-      Every modern concrete structure depends on it. Construction workers lift heavy
-      steel bars, align them with the rack slots, and force them down &mdash; thousands
-      of times a day, at a steady cost in chronic injury. And no two bars are alike:
-      <strong>appearance</strong> varies with rust and mill finish,
-      <strong>nominal size</strong> with the design, and even one design drifts within
-      its <strong>production tolerances</strong> &mdash; bend angle, cut length,
-      out-of-plane twist, hook shape.
-    </p>
-
-    <div class="fig-row">
-      <figure class="fig">
-        <div class="media-slot" data-img="static/images/motivation.png"
-             data-label="Manual installation photo"></div>
-        <figcaption>Manual rebar installation on site.</figcaption>
-      </figure>
-      <figure class="fig">
-        <div class="media-slot" data-img="static/images/Picture2.svg"
-             data-label="Rebar geometry family"></div>
-        <figcaption>Real bars as they arrive: their appearance and geometry vary widely.</figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== CLAIM ============================== -->
-<section class="claim">
-  <div class="container narrow">
-    <div class="claim-k">Our claim</div>
-    <p>
-      Train an end-to-end visuomotor policy on <strong>raw RGB</strong>, in simulation
-      at scale &mdash; across <strong>diverse variations</strong>, with the
-      <strong>right training recipe</strong> &mdash; and it grasps and inserts real
-      bars robustly. No real-world data, no perception stack.
-    </p>
-  </div>
-</section>
-
-<!-- ============================== FRAMEWORK ============================== -->
-<section class="section" id="framework">
-  <div class="container">
-    <h2>Training Framework</h2>
-    <p class="lead narrow-p">
-      Three phases, one controller. A privileged <strong>teacher</strong> learns the
-      task with RL on procedurally generated geometry, a multi-view
-      <strong>visual student</strong> is distilled from it under heavy randomization,
-      and the student deploys <strong>zero-shot</strong> with frozen weights.
-    </p>
-
-    <figure class="fig wide">
-      <div class="media-slot" data-img="static/images/framework.png"
-           data-label="Framework figure"
-           data-hint="Replace with the final vector version (<code>framework.svg</code>) when it is ready."></div>
-      <figcaption><span class="draft-tag">draft</span> The RebarSim training and deployment pipeline.</figcaption>
-    </figure>
-
-    <div class="phases">
-      <div class="phase phase-1">
-        <div class="phase-k">Phase 1</div>
-        <h3>Privileged teacher &mdash; RL in simulation</h3>
-        <p>
-          State-based policy over privileged proprioception, object and contact state,
-          trained across procedurally generated rebar and rack geometries.
-        </p>
-      </div>
-      <div class="phase phase-2">
-        <div class="phase-k">Phase 2</div>
-        <h3>Visual student &mdash; distillation</h3>
-        <p>
-          Shared ResNet-18 encoder over calibrated views plus proprioception.
-          DAgger&nbsp;+&nbsp;BC (&beta;&nbsp;=&nbsp;0.5) under appearance and
-          system-identified dynamics randomization.
-        </p>
-      </div>
-      <div class="phase phase-3">
-        <div class="phase-k">Phase 3</div>
-        <h3>Zero-shot deployment</h3>
-        <p>
-          Frozen weights, same controller, same cameras. No segmentation model, no
-          pose estimator, no fine-tuning.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== SIMULATION ============================== -->
-<section class="section alt" id="sim">
-  <div class="container">
-    <h2>In Simulation</h2>
-    <p class="lead narrow-p">The student policy inside the simulator it was trained in.</p>
-
-    <div class="demo-row row-sim">
-      <div class="row-head">
-        <div class="row-title">
-          <h3>Simulated rollouts</h3>
-          <p>Procedurally generated bars and racks, randomized appearance and initial states.</p>
+    <!-- Hero head: will stick at the top -->
+    <div class="hero-head is-hidden-mobile">
+      <header class="navbar">
+        <div class="container is-size-5">
+          <div class="navbar-menu">
+            <div class="navbar-end">
+              <!-- TODO(user): turn each of these into an <a class="navbar-item" href="..."> and
+                   delete its <span class="soon"> once the link exists. -->
+              <span class="navbar-item pl-4 pr-4 is-soon">
+                <span class="icon" style="margin-right:5px;">
+                  <img src="./static/images/pdf.svg" alt="PDF" />
+                </span>
+                <span>Paper</span>
+                <span class="soon">soon</span>
+              </span>
+              <span class="navbar-item pl-4 pr-4 is-soon">
+                <span class="icon" style="margin-right:5px;">
+                  <img src="./static/images/arxiv.svg" alt="arXiv" />
+                </span>
+                <span>arXiv</span>
+                <span class="soon">soon</span>
+              </span>
+              <span class="navbar-item pl-4 pr-4 is-soon">
+                <span class="icon" style="margin-right:5px;">
+                  <img src="./static/images/youtube.svg" alt="Video" />
+                </span>
+                <span>Video</span>
+                <span class="soon">soon</span>
+              </span>
+              <span class="navbar-item pl-4 pr-4">
+                <button class="button is-inverted is-large" disabled>
+                  <span class="icon">
+                    <img src="./static/images/github.svg" alt="Code" />
+                  </span>
+                  <span>Code</span>
+                  <span class="soon">soon</span>
+                </button>
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="row-nav">
-          <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
-          <button class="arrow" type="button" data-dir="1" aria-label="Next clip">&#8250;</button>
+      </header>
+    </div>
+
+    <!-- Hero content: will be in the middle -->
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title is-1 publication-title is-size-1-mobile hero-name">
+          RebarSim
+        </h1>
+        <h1 class="subtitle is-1 publication-title is-size-5-mobile hero-tagline">
+          Visual Sim-to-Real Learning for Robotic Insertion under Geometric Variations:
+          <br class="is-hidden-mobile"> Application to Rebar Installation
+        </h1>
+        <h1 class="is-2 is-italic is-size-6-mobile hero-venue">
+          ICRA 2027 Submission &middot; Under Review
+        </h1>
+
+        <!-- TODO(user): replace with the real author list after the double-blind review period. -->
+        <div class="publication-authors hero-authors is-size-6-mobile">
+          Anonymous Authors
+        </div>
+        <div class="publication-authors hero-authors is-size-7-mobile">
+          Affiliations withheld for review
+        </div>
+
+        <div class="column has-text-centered is-hidden-tablet">
+          <div class="publication-links">
+            <span class="link-block">
+              <button class="external-link button is-normal is-rounded is-dark" disabled>
+                <span class="icon"><img src="./static/images/pdf.svg" alt="PDF" /></span>
+                <span>Paper</span>
+              </button>
+            </span>
+            <span class="link-block">
+              <button class="external-link button is-normal is-rounded is-dark" disabled>
+                <span class="icon"><img src="./static/images/arxiv.svg" alt="arXiv" /></span>
+                <span>arXiv</span>
+              </button>
+            </span>
+            <span class="link-block">
+              <button class="external-link button is-normal is-rounded is-dark" disabled>
+                <span class="icon"><img src="./static/images/youtube.svg" alt="Video" /></span>
+                <span>Video</span>
+              </button>
+            </span>
+            <span class="link-block">
+              <button class="external-link button is-normal is-rounded is-dark" disabled>
+                <span class="icon"><img src="./static/images/github.svg" alt="Code" /></span>
+                <span>Code</span>
+              </button>
+            </span>
+          </div>
         </div>
       </div>
-      <div class="strip-wrap">
-        <div class="strip">
+    </div>
+
+    <!-- Hero footer: will stick at the bottom -->
+    <div class="hero-foot is-hidden-mobile">
+      <nav class="tabs is-boxed is-fullwidth is-size-5">
+        <ul>
+          <li><a href="#background">Background</a></li>
+          <li><a href="#framework">Training Framework</a></li>
+          <li><a href="#sim">In Simulation</a></li>
+          <li><a href="#videos">Real World</a></li>
+          <li><a href="#takeaways">Takeaways</a></li>
+          <li><a href="#bibtex">BibTeX</a></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+
+  <!-- ============================== PITCH ============================== -->
+  <section class="section is-medium" id="overview">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="subtitle has-text-centered">
+            One <em>end-to-end</em> visuomotor policy inserts
+            <span class="hl">rebar of varying geometry</span> at
+            <span class="hl">over 90&#8202;% success</span> on real hardware, trained
+            <span class="hl">only in simulation</span>.
+          </h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered stats mt-5">
+        <div class="column">
+          <p class="stat-num">&gt;90&#8202;%</p>
+          <p class="stat-lab">real-world success, <strong>across diverse rebar geometries</strong></p>
+        </div>
+        <div class="column">
+          <p class="stat-num">0</p>
+          <p class="stat-lab">real-world training samples</p>
+        </div>
+        <div class="column">
+          <p class="stat-num">1.4&#8202;mm</p>
+          <p class="stat-lab">slot clearance</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================== BACKGROUND ============================== -->
+  <section class="section is-small" id="background">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">Background</h2>
+          <div class="content has-text-justified">
+            <p>
+              Every modern concrete structure depends on it. Construction workers lift heavy
+              steel bars, align them with the rack slots, and force them down &mdash; thousands
+              of times a day, at a steady cost in chronic injury. And no two bars are alike:
+              <strong>appearance</strong> varies with rust and mill finish,
+              <strong>nominal size</strong> with the design, and even one design drifts within
+              its <strong>production tolerances</strong> &mdash; bend angle, cut length,
+              out-of-plane twist, hook shape.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-vcentered fig-row">
+        <div class="column">
+          <figure class="fig">
+            <div class="media-slot" data-img="static/images/motivation.png"
+              data-label="Manual installation photo"></div>
+            <figcaption>Manual rebar installation on site.</figcaption>
+          </figure>
+        </div>
+        <div class="column">
+          <figure class="fig">
+            <div class="media-slot" data-img="static/images/Picture2.svg" data-label="Rebar geometry family"></div>
+            <figcaption>Real bars as they arrive: their appearance and geometry vary widely.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================== CLAIM ============================== -->
+  <section class="section is-small has-background-black has-text-light" id="claim">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 has-text-white has-text-centered is-size-5-mobile">Our Claim</h2>
+          <div class="content has-text-justified">
+            <p>
+              Train an end-to-end visuomotor policy on <strong>raw RGB</strong>, in simulation
+              at scale &mdash; across <strong>diverse variations</strong>, with the
+              <strong>right training recipe</strong> &mdash; and it grasps and inserts real
+              bars robustly. No real-world data, no perception stack.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================== FRAMEWORK ============================== -->
+  <section class="section is-small" id="framework">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">Training Framework</h2>
+          <div class="content has-text-justified">
+            <p>
+              Three phases, one controller. A privileged <strong>teacher</strong> learns the
+              task with RL on procedurally generated geometry, a multi-view
+              <strong>visual student</strong> is distilled from it under heavy randomization,
+              and the student deploys <strong>zero-shot</strong> with frozen weights.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <figure class="fig wide">
+        <div class="media-slot" data-img="static/images/framework.png" data-label="Framework figure"
+          data-hint="Replace with the final vector version (<code>framework.svg</code>) when it is ready."></div>
+        <figcaption><span class="draft-tag">draft</span> The RebarSim training and deployment pipeline.</figcaption>
+      </figure>
+
+      <div class="columns is-centered mt-6 phases">
+        <div class="column">
+          <div class="phase phase-1">
+            <p class="phase-k">Phase 1</p>
+            <h3 class="title is-5">Privileged teacher &mdash; RL in simulation</h3>
+            <p>
+              State-based policy over privileged proprioception, object and contact state,
+              trained across procedurally generated rebar and rack geometries.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="phase phase-2">
+            <p class="phase-k">Phase 2</p>
+            <h3 class="title is-5">Visual student &mdash; distillation</h3>
+            <p>
+              Shared ResNet-18 encoder over calibrated views plus proprioception.
+              DAgger&nbsp;+&nbsp;BC (&beta;&nbsp;=&nbsp;0.5) under appearance and
+              system-identified dynamics randomization.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="phase phase-3">
+            <p class="phase-k">Phase 3</p>
+            <h3 class="title is-5">Zero-shot deployment</h3>
+            <p>
+              Frozen weights, same controller, same cameras. No segmentation model, no
+              pose estimator, no fine-tuning.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================== SIMULATION ============================== -->
+  <section class="section is-small" id="sim">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">In Simulation</h2>
+          <div class="content has-text-centered">
+            <p>The student policy inside the simulator it was trained in.</p>
+          </div>
+          <div class="content has-text-centered">
+            <p class="clip-note">
+              Procedurally generated bars and racks, randomized appearance and initial states.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-multiline is-centered clip-grid">
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/sim/env2_ep1.mp4" data-label="Sim 1"></div>
             <figcaption>Sim rollout 1</figcaption>
           </figure>
+        </div>
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/sim/env9_ep1.mp4" data-label="Sim 2"></div>
             <figcaption>Sim rollout 2</figcaption>
           </figure>
+        </div>
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/sim/env2_ep3.mp4" data-label="Sim 3"></div>
             <figcaption>Sim rollout 3</figcaption>
           </figure>
+        </div>
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/sim/env2_ep2.mp4" data-label="Sim 4"></div>
             <figcaption>Sim rollout 4</figcaption>
@@ -202,90 +351,122 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================== VIDEOS ============================== -->
-<section class="section" id="videos">
-  <div class="container">
-    <h2>Real-World Demos</h2>
-    <p class="lead narrow-p">The same frozen policy, straight out of simulation, played at 1&times;.</p>
 
-    <div class="demo-row row-rollouts">
-      <div class="row-head">
-        <div class="row-title">
-          <h3>Different initial states, different bars</h3>
-          <p>Real-robot rollouts of the same frozen policy &mdash; a new arm pose and a new bar each time.</p>
-        </div>
-        <div class="row-nav">
-          <button class="arrow" type="button" data-dir="-1" aria-label="Previous clip">&#8249;</button>
-          <button class="arrow" type="button" data-dir="1" aria-label="Next clip">&#8250;</button>
+  <!-- ============================== REAL WORLD ============================== -->
+  <section class="section is-small" id="videos">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">Real-World Demos</h2>
+          <div class="content has-text-centered">
+            <p>The same frozen policy, straight out of simulation, played at 1&times;.</p>
+          </div>
+          <h3 class="title is-4 has-text-centered is-size-6-mobile">Different initial states, different bars</h3>
+          <div class="content has-text-centered">
+            <p class="clip-note">
+              Real-robot rollouts of the same frozen policy &mdash; a new arm pose and a new bar each time.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="strip-wrap">
-        <div class="strip">
+
+      <div class="columns is-multiline is-centered clip-grid">
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/rollout_01.mp4" data-label="Rollout 1"></div>
             <figcaption>Rollout 1</figcaption>
           </figure>
+        </div>
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/rollout_02.mp4" data-label="Rollout 2"></div>
             <figcaption>Rollout 2</figcaption>
           </figure>
+        </div>
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/rollout_03.mp4" data-label="Rollout 3"></div>
             <figcaption>Rollout 3</figcaption>
           </figure>
+        </div>
+        <div class="column is-half">
           <figure class="clip">
             <div class="media-slot video" data-video="static/videos/rollout_04.mp4" data-label="Rollout 4"></div>
             <figcaption>Rollout 4</figcaption>
           </figure>
         </div>
       </div>
-    </div>
 
-    <div class="demo-row row-long">
-      <div class="row-head">
-        <div class="row-title">
-          <h3>Continuous operation</h3>
-          <p>A single uncut 20-minute take: grasp, insert, retract, bar after bar.</p>
+      <div class="columns is-centered mt-6">
+        <div class="column is-four-fifths">
+          <div class="box has-text-centered pt-5 pb-5">
+            <h3 class="title is-4 is-size-6-mobile">Continuous operation <span class="soon">soon</span></h3>
+            <p>A single uncut 20-minute take: grasp, insert, retract, bar after bar.</p>
+          </div>
         </div>
-        <span class="soon">soon</span>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
 
-<!-- ============================== TAKEAWAYS ============================== -->
-<section class="section alt" id="takeaways">
-  <div class="container">
-    <h2>Takeaways</h2>
-    <p class="lead narrow-p">
-      What the experiments actually showed. <span class="soon">soon</span>
-    </p>
-  </div>
-</section>
+  <!-- ============================== TAKEAWAYS ============================== -->
+  <section class="section is-small" id="takeaways">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">Takeaways</h2>
+          <div class="content has-text-centered">
+            <p>What the experiments actually showed. <span class="soon">soon</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- ============================== BIBTEX ============================== -->
-<section class="section" id="bibtex">
-  <div class="container narrow">
-    <h2>BibTeX</h2>
-    <p class="lead narrow-p">
-      Citation once the paper is out. <span class="soon">soon</span>
-    </p>
-  </div>
-</section>
 
-<footer class="footer">
-  <div class="container narrow">
-    <p class="small">
-      Figures marked <span class="draft-tag">draft</span> are provisional.
-      Released under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
-    </p>
-  </div>
-</footer>
+  <!-- ============================== BIBTEX ============================== -->
+  <section class="section is-small" id="bibtex">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">BibTeX</h2>
+          <div class="content has-text-centered">
+            <p>Citation once the paper is out. <span class="soon">soon</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script src="static/js/main.js"></script>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              Figures marked <span class="draft-tag">draft</span> are provisional and will be
+              replaced by their final versions from the paper.
+            </p>
+            <p>
+              Website template modified from <a href="https://nerfies.github.io/">NeRFies</a>,
+              <a href="https://huy-ha.github.io/scalingup/">Scaling Up Distilling Down</a> and
+              <a href="https://umi-on-legs.github.io/">UMI on Legs</a>.
+            </p>
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
+                Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./static/js/index.js"></script>
 </body>
+
 </html>
