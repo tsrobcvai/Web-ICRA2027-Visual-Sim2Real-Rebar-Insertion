@@ -8,12 +8,12 @@
     content="An end-to-end visuomotor policy that inserts rebar of varying geometry at over 90% success, trained entirely in simulation with zero real-world data.">
   <meta name="keywords" content="Robotics, Sim-to-Real, Visuomotor Policy, Insertion, Rebar, Construction Robotics">
   <title>
-    RebarSim: Visual Sim-to-Real Learning for Robotic Insertion under Geometric Variations
+    Visual Sim-to-Real Learning for Robotic Insertion under Geometric Variations
   </title>
 
   <!-- Social preview. og:image must be an absolute URL -- Slack, Twitter and
        friends fetch it out of context, so a relative path renders nothing. -->
-  <meta property="og:title" content="RebarSim &mdash; Visual Sim-to-Real Rebar Insertion">
+  <meta property="og:title" content="Visual Sim-to-Real Rebar Insertion">
   <meta property="og:description"
     content="One end-to-end visuomotor policy. Any rebar size. >90% real-world success. Zero real-world data.">
   <meta property="og:image" content="https://rebarsim.github.io/static/images/teaser.png">
@@ -93,9 +93,6 @@
     <!-- Hero content: will be in the middle -->
     <div class="hero-body">
       <div class="container has-text-centered">
-        <h1 class="title is-1 publication-title is-size-1-mobile hero-name">
-          RebarSim
-        </h1>
         <h1 class="subtitle is-1 publication-title is-size-5-mobile hero-tagline">
           Visual Sim-to-Real Learning for Robotic Insertion under Geometric Variations:
           <br class="is-hidden-mobile"> Application to Rebar Installation
@@ -147,10 +144,11 @@
     <div class="hero-foot is-hidden-mobile">
       <nav class="tabs is-boxed is-fullwidth is-size-5">
         <ul>
+          <li><a href="#demos">Demos</a></li>
           <li><a href="#background">Background</a></li>
           <li><a href="#framework">Training Framework</a></li>
           <li><a href="#sim">In Simulation</a></li>
-          <li><a href="#videos">Real World</a></li>
+          <li><a href="#evaluation">Evaluation</a></li>
           <li><a href="#takeaways">Takeaways</a></li>
           <li><a href="#bibtex">BibTeX</a></li>
         </ul>
@@ -160,7 +158,7 @@
 
 
   <!-- ============================== PITCH ============================== -->
-  <section class="section is-medium" id="overview">
+  <section class="section is-small" id="overview">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column is-four-fifths">
@@ -173,10 +171,10 @@
         </div>
       </div>
 
-      <div class="columns is-centered has-text-centered stats mt-5">
+      <div class="columns is-centered has-text-centered stats mt-4">
         <div class="column">
           <p class="stat-num">&gt;90&#8202;%</p>
-          <p class="stat-lab">real-world success, <strong>across diverse rebar geometries</strong></p>
+          <p class="stat-lab">real-world success, <strong>across bar geometries</strong></p>
         </div>
         <div class="column">
           <p class="stat-num">0</p>
@@ -186,6 +184,81 @@
           <p class="stat-num">1.4&#8202;mm</p>
           <p class="stat-lab">slot clearance</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================== DEMOS ==============================
+       Tabbed video chooser, after weirdlabuw.github.io/omnireset: one short line of
+       plain words per tab, and the clip in a tab is only fetched once that tab is
+       opened (the slot carries data-defer, filled by static/js/index.js). Adding a
+       tab = a <button data-tab="x"> plus a sibling <div data-panel="x">.       -->
+  <section class="section is-small" id="demos">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">Demos</h2>
+          <div class="content has-text-centered">
+            <p>A single frozen policy, deployed zero-shot on hardware.</p>
+            <p class="clip-note">
+              The stacked views on the right are the policy's inputs; the main view is for
+              visualization only.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="eval-tabs" role="tablist" aria-label="Real-world demos">
+        <button class="eval-tab is-active" data-tab="uncut" role="tab">Uncut long demo</button>
+        <button class="eval-tab" data-tab="perturbation" role="tab">Perturbation</button>
+        <button class="eval-tab" data-tab="cluttered" role="tab">Cluttered scene</button>
+        <!-- TODO(user): drop static/videos/highlights.mp4 in, delete the <span class="soon">,
+             and move this button + its panel to the front of the group. -->
+        <button class="eval-tab" data-tab="highlights" role="tab">Highlights <span class="soon">soon</span></button>
+      </div>
+
+      <div class="tab-panel is-active" data-panel="uncut" role="tabpanel">
+        <p class="tab-line">One uncut take. <strong>49 attempts in a row, 45 of them succeed</strong> &mdash;
+          the counter runs in the corner.</p>
+        <figure class="clip ultrawide">
+          <div class="media-slot video" data-video="static/videos/long_demo.mp4"
+               data-label="Uncut long demo" data-once></div>
+          <figcaption>
+            Grasp, insert, retract, bar after bar. Rollouts play at 1&times;; the human
+            resets between bars are sped to 2&times;.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="tab-panel" data-panel="perturbation" role="tabpanel">
+        <p class="tab-line">Policies recover from perturbations and retry after collision.</p>
+        <figure class="clip ultrawide">
+          <div class="media-slot video" data-video="static/videos/robust_perturbation.mp4"
+               data-label="Perturbation" data-defer data-controls></div>
+        </figure>
+      </div>
+
+      <div class="tab-panel" data-panel="cluttered" role="tabpanel">
+        <p class="tab-line">Policies succeed under dramatic background changes.</p>
+        <figure class="clip ultrawide">
+          <div class="media-slot video" data-video="static/videos/robust_background.mp4"
+               data-label="Cluttered scene" data-defer data-controls></div>
+          <figcaption>
+            The white backdrop is removed and the workspace is strewn with distractor
+            objects &mdash; the policy still finds the slot.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="tab-panel" data-panel="highlights" role="tabpanel">
+        <p class="tab-line">The best moments from every evaluation, back to back.</p>
+        <figure class="clip ultrawide">
+          <div class="media-slot video" data-video="static/videos/highlights.mp4"
+               data-label="Highlights" data-defer data-once
+               data-hint="Supercut of the strongest moments. Drop the file here and it appears."></div>
+          <figcaption>Highlight supercut.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -357,19 +430,71 @@
   </section>
 
 
-  <!-- ============================== REAL WORLD ============================== -->
-  <section class="section is-small" id="videos">
+  <!-- ============================== EVALUATION ============================== -->
+  <section class="section is-small" id="evaluation">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-1 has-text-centered is-size-4-mobile">Real-World Demos</h2>
+          <h2 class="title is-1 has-text-centered is-size-4-mobile">Real-World Evaluation</h2>
+          <h3 class="title is-4 has-text-centered is-size-6-mobile">The six bars</h3>
           <div class="content has-text-centered">
-            <p>The same frozen policy, straight out of simulation, played at 1&times;.</p>
+            <p class="clip-note">
+              Every bar used in the real-world evaluations, reconstructed from a scan of the
+              actual bar. <strong>Drag to rotate</strong>, scroll to zoom.
+            </p>
           </div>
+        </div>
+      </div>
+
+      <!-- The bars themselves: six real bars, scanned and reconstructed, so a reader can
+           see for themselves how much the geometry varies. Each slot loads
+           static/models/rebar_0N.glb on first scroll-in; see static/js/models.js. -->
+      <div class="columns is-multiline is-centered model-grid">
+        <div class="column is-one-third is-half-mobile">
+          <figure class="model">
+            <div class="model-slot" data-model="static/models/rebar_01.glb" data-label="Bar 1"></div>
+            <figcaption>Bar 1</figcaption>
+          </figure>
+        </div>
+        <div class="column is-one-third is-half-mobile">
+          <figure class="model">
+            <div class="model-slot" data-model="static/models/rebar_02.glb" data-label="Bar 2"></div>
+            <figcaption>Bar 2</figcaption>
+          </figure>
+        </div>
+        <div class="column is-one-third is-half-mobile">
+          <figure class="model">
+            <div class="model-slot" data-model="static/models/rebar_03.glb" data-label="Bar 3"></div>
+            <figcaption>Bar 3</figcaption>
+          </figure>
+        </div>
+        <div class="column is-one-third is-half-mobile">
+          <figure class="model">
+            <div class="model-slot" data-model="static/models/rebar_04.glb" data-label="Bar 4"></div>
+            <figcaption>Bar 4</figcaption>
+          </figure>
+        </div>
+        <div class="column is-one-third is-half-mobile">
+          <figure class="model">
+            <div class="model-slot" data-model="static/models/rebar_05.glb" data-label="Bar 5"></div>
+            <figcaption>Bar 5</figcaption>
+          </figure>
+        </div>
+        <div class="column is-one-third is-half-mobile">
+          <figure class="model">
+            <div class="model-slot" data-model="static/models/rebar_06.glb" data-label="Bar 6"></div>
+            <figcaption>Bar 6</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="columns is-centered mt-6">
+        <div class="column is-four-fifths">
           <h3 class="title is-4 has-text-centered is-size-6-mobile">Different initial states, different bars</h3>
           <div class="content has-text-centered">
             <p class="clip-note">
-              Real-robot rollouts of the same frozen policy &mdash; a new arm pose and a new bar each time.
+              Real-robot rollouts of the same frozen policy, played at 1&times; &mdash; a new
+              arm pose and a new bar each time.
             </p>
           </div>
         </div>
@@ -399,15 +524,6 @@
             <div class="media-slot video" data-video="static/videos/rollout_04.mp4" data-label="Rollout 4"></div>
             <figcaption>Rollout 4</figcaption>
           </figure>
-        </div>
-      </div>
-
-      <div class="columns is-centered mt-6">
-        <div class="column is-four-fifths">
-          <div class="box has-text-centered pt-5 pb-5">
-            <h3 class="title is-4 is-size-6-mobile">Continuous operation <span class="soon">soon</span></h3>
-            <p>A single uncut 20-minute take: grasp, insert, retract, bar after bar.</p>
-          </div>
         </div>
       </div>
     </div>
@@ -470,6 +586,15 @@
   </footer>
 
   <script src="./static/js/index.js"></script>
+
+  <!-- Rebar model viewers. three.js r147 classic (non-module) builds are vendored under
+       static/js/vendor/ so there is still no CDN and no build step. Loading a .glb needs
+       XHR, which browsers refuse over file:// -- there the six slots stay placeholders
+       and the rest of the page is unaffected. -->
+  <script src="./static/js/vendor/three.min.js"></script>
+  <script src="./static/js/vendor/GLTFLoader.js"></script>
+  <script src="./static/js/vendor/OrbitControls.js"></script>
+  <script src="./static/js/models.js"></script>
 </body>
 
 </html>

@@ -7,9 +7,11 @@ Built on the NeRFies / [UMI on Legs](https://umi-on-legs.github.io/) project-pag
 template: [Bulma](https://bulma.io) does the layout and typography, and
 `static/css/index.css` holds the page-specific bits on top of it.
 
-No build step and no CDN — Bulma, the webfonts and every icon are vendored into
-`static/`, so the page works offline and over `file://`. Open `index.html` and it
-works.
+No build step and no CDN — Bulma, the webfonts, every icon and three.js are vendored
+into `static/`, so the page works offline. Open `index.html` and it works, with one
+exception: the six rebar models need XHR to load a `.glb`, which browsers refuse over
+`file://`, so those six slots stay placeholders unless the page is served over http.
+Everything else is unaffected.
 
 ---
 
@@ -27,7 +29,11 @@ file to the right path.** No HTML editing needed.
 | `hero.mp4` | Full-screen hero background (desktop) — ✅ **in place** |
 | `hero-mobile.mp4` | Same, centre-cropped to portrait for phones — ✅ **in place** |
 | `sim/env2_ep1.mp4`, `sim/env9_ep1.mp4`, `sim/env2_ep3.mp4`, `sim/env2_ep2.mp4` | **In Simulation** grid — ✅ **in place** |
-| `rollout_01.mp4` … `rollout_04.mp4` | **Real-World Demos** grid — ✅ **in place** |
+| `rollout_01.mp4` … `rollout_04.mp4` | **Real-World Evaluation** grid, at the foot of the page — ✅ **in place** |
+| `long_demo.mp4` | **Demos → Uncut long demo** tab — ✅ **in place** |
+| `robust_background.mp4` | **Demos → Cluttered scene** tab — ✅ **in place** |
+| `robust_perturbation.mp4` | **Demos → Perturbation** tab — ✅ **in place** |
+| `highlights.mp4` | **Demos → Highlights** tab — ⬜ **missing**, shows a `soon` chip |
 
 The clips sit in a plain Bulma column grid (`columns is-multiline`, two per row on
 desktop, one per row on mobile). Adding a clip is another
@@ -35,10 +41,17 @@ desktop, one per row on mobile). Adding a clip is another
 carousel or scroll handling to keep in sync.
 
 Clips are boxed at 16:9 and letterboxed on black, so mixed aspect ratios still line
-up. They autoplay muted on loop and pause when scrolled out of view. A slot marked
-`data-once` instead plays through once and shows controls — use that for the long
-continuous-operation take. The Continuous-operation block carries no clip yet; it
-shows a `soon` chip instead of an empty slot.
+up. They autoplay muted on loop and pause when scrolled out of view. Two attributes
+change that: `data-once` plays through once instead of looping — `long_demo.mp4` uses
+it, so a 5½-minute take does not loop at a reader — and `data-controls` keeps the loop
+but shows the progress bar anyway. Both put controls on the clip, which is what makes
+the four clips in the demo tabs look like one set rather than two.
+
+The long take and the two robustness clips are 1604×720 (2.23:1) rather than 16:9,
+because each carries a side panel of the policy's camera inputs. They sit in a
+full-width `column` under `figure class="clip ultrawide"`, which boxes them at their
+own ratio (`.clip.ultrawide` in `static/css/index.css`) instead of letterboxing them
+inside a 16:9 half-column, where the burnt-in labels would be unreadable.
 
 The four rollouts came from `static/videos/` under their original names (all
 1280×720, 10 fps, 1.6–6.9 s). The number is the display order, so to reorder the
@@ -50,6 +63,46 @@ grid, rename the files — the HTML never changes:
 | `rollout_02.mp4` | `student_8cam-mdepth-slotseg_model3000__ee_x0p407_y0p044_z0p262_20260725_140540.mp4` |
 | `rollout_03.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p408_y0p046_z0p267_20260718_120240.mp4` |
 | `rollout_04.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p404_y0p021_z0p265_20260718_112222.mp4` |
+
+The long take and the two robustness clips came from
+`isaaclab_rollout/exports/long_demo/` (all 1604×720, 15 fps), re-encoded on the way in:
+
+| now | was | length |
+| --- | --- | --- |
+| `long_demo.mp4` | `5m41 Uncut Demo.mp4` | 5 m 41 s — 49 attempts, 45 / 4 |
+| `robust_background.mp4` | `background_changes.mp4` | 1 m 41 s |
+| `robust_perturbation.mp4` | `perturbation.mp4` | 1 m 10 s |
+
+`5m41 Uncut Demo.mp4` is 111 MB at source, over GitHub's 100 MB per-file limit, so all
+three have to be re-encoded. **Keep the native 1604×720 and spend the budget on
+bitrate** — a first pass scaled them to 1280 wide at CRF 28, which came to 34 MB for
+the three and was visibly soft: the bar's ribbing smeared, the rack clips mushy, the
+extrusion texture gone. Two things caused that, and the downscale was the larger one.
+Each clip is shown 960 px wide, so on a HiDPI screen a 1280-wide file is *upscaled*
+1.5×, and 1604 is already below what such a screen wants.
+
+```bash
+ffmpeg -i "5m41 Uncut Demo.mp4" -c:v libx264 -crf 23 -preset slow \
+       -pix_fmt yuv420p -movflags +faststart -an static/videos/long_demo.mp4
+```
+
+| clip | source | CRF | shipped |
+| --- | --- | --- | --- |
+| `long_demo.mp4` | 111 MB | 23 | 57 MB (1.40 Mbps) |
+| `robust_background.mp4` | 51 MB | 22 | 33 MB (2.72 Mbps) |
+| `robust_perturbation.mp4` | 24 MB | 22 | 15 MB (1.73 Mbps) |
+
+The long take gets CRF 23 rather than 22 only to stay clear of the 100 MB limit; at
+this bitrate the burnt-in counter is indistinguishable from source. Going to CRF 20
+costs about 50 % more for a difference that needs an A/B at 1:1 pixels to see.
+
+105 MB of video looks reckless for a project page, and would be, except that **all
+three sit behind a tab and none of them autoplays** — `data-defer` means a clip is not
+fetched until its tab is opened, and `data-once`/`data-controls` mean it waits to be
+played. A reader who scrolls past the section downloads none of it, and one who opens a
+tab downloads one clip. That is what makes the quality close to free here, and it is
+also why the short clips elsewhere on the page, which *do* autoplay, are still held to
+a few megabytes.
 
 **Encoding** — keep them small so the page loads on a conference wifi:
 
@@ -79,22 +132,77 @@ Swapping the hero for different footage means re-cutting all three. The portrait
 is 466×720 (0.647); if you change that ratio, update the matching `height`/`min-width`
 percentages on the mobile `.hero-video` in `index.html`.
 
+### Demo tabs
+
+The **Demos** section is a tab group, after the Real-World Evaluations block on the
+[OmniReset page](https://weirdlabuw.github.io/omnireset/): a row of pills over one
+visible panel, one short line of plain words per panel. Adding a tab is a button plus
+a sibling panel — the JS pairs them by name, there is no list to keep in sync:
+
+```html
+<div class="eval-tabs">
+  <button class="eval-tab" data-tab="myclip">My clip</button>
+</div>
+<div class="tab-panel" data-panel="myclip">
+  <p class="tab-line">One line of plain words.</p>
+  <figure class="clip ultrawide">
+    <div class="media-slot video" data-video="static/videos/x.mp4" data-defer></div>
+  </figure>
+</div>
+```
+
+`is-active` on one button and one panel is the open tab. A slot marked **`data-defer`
+is not fetched until its tab is opened for the first time** — with three long takes in
+the group, a reader who watches one downloads one. The open-by-default tab must *not*
+carry `data-defer`, or it will sit empty until clicked.
+
+To promote the Highlights tab once `highlights.mp4` exists: delete its
+`<span class="soon">soon</span>`, and move its button and panel to the front of the
+group, taking `is-active` off `uncut` and putting it on `highlights`.
+
+### Rebar models → `static/models/`
+
+Six `.glb` files, `rebar_01.glb` … `rebar_06.glb`, shown as drag-to-rotate viewers at
+the head of **Real-World Evaluation → The six bars**. Same contract as a media slot: drop the file in and it
+appears, and until then the slot names the path it wants. The file-level details —
+Y-up, ≤ 2 MB per bar, why decimating matters — are in `static/models/README.md`.
+
+The viewer is `static/js/models.js` on three.js **r147**, vendored under
+`static/js/vendor/` as the *classic* (non-module) builds so there is still no CDN, no
+import map and no build step. r147 is the last release that ships `examples/js`, which
+is where `GLTFLoader` and `OrbitControls` come from; upgrading means switching the page
+to ES modules, which in turn gives up `file://`.
+
+Each viewer builds its WebGL context the first time it scrolls into view, and the
+render loop only ticks the viewers currently on screen — six live canvases would
+otherwise spin a laptop fan for a section most readers scroll past.
+
 ### Figures → `static/images/`
 
 | File | Where it appears | Status |
 | --- | --- | --- |
 | `motivation.png` | Background, left | final — paper Fig. 1 (`figures_src/motivation.png`) |
 | `Picture2.svg` | Background, right | final — real on-site rebar, showing appearance and tolerance spread |
-| `framework.png` | Training framework | draft, copied from the paper (`figures_src/pipeline_preview.png`) |
+| `framework.png` | Training framework | draft, copied from the paper (`figures_src/framework.png`), downscaled to 2000 px wide |
 | `hero-poster.jpg` | First frame of the hero, shown while the video loads | generated from `hero.mp4` |
 | `teaser.png` | not on the page — only the `og:image` social preview | draft, copied from the paper |
 | `pdf.svg`, `arxiv.svg`, `youtube.svg`, `github.svg` | Hero link buttons | vendored icons |
 | `favicon.svg` | Browser tab | — |
 
 Anything marked `draft` in the page is a provisional figure lifted from the LaTeX repo
-(`/n/fs/rebar/isaaclab/repos/LaTeX-ICRA2027-Visual-Sim2Real-Rebar-Insertion/figures_src/`).
-Overwrite the file with the final version and the `draft` tag in `index.html` can be
-deleted.
+(`../LaTeX-ICRA2027-Visual-Sim2Real-Rebar-Insertion/figures_src/`). Overwrite the file
+with the final version and the `draft` tag in `index.html` can be deleted.
+
+The paper's figures are typeset for a two-column page, so they arrive much larger than
+this page can show — `framework.png` is 3886 px wide at source against a 960 px
+container. Downscale to **2000 px wide** on the way in: sharp on a retina screen,
+roughly a quarter of the file size, and a reader who wants the detail can still open
+the image itself.
+
+```bash
+ffmpeg -i ../LaTeX-.../figures_src/framework.png -vf "scale=2000:-1:flags=lanczos" \
+       static/images/framework.png
+```
 
 ### Text still to fill in (`index.html`)
 
@@ -103,8 +211,12 @@ deleted.
   placeholders with a `soon` chip, in the hero navbar on desktop and under the title
   on mobile. Turn each into an `<a class="navbar-item" href="…">` / `<a class="button
   …" href="…">` and delete its `<span class="soon">soon</span>`.
-- Headline numbers: `>90 %`, `1.4 mm` — check against the final paper
+- Headline numbers: `>90 %`, `1.4 mm` — check against the final paper. The `>90 %`
+  is what `long_demo.mp4` shows on screen: 45 successes in 49 consecutive attempts
+  (91.8 %), so the two should be kept consistent.
 - Takeaways and BibTeX sections are stubs behind a `soon` chip
+- `static/videos/highlights.mp4` — the **Demos → Highlights** tab, still a `soon` chip
+- `static/models/rebar_01.glb` … `rebar_06.glb` — the six reconstructed bars
 
 > **Double-blind:** ICRA 2027 review is double-blind. Keep the page anonymous (no
 > author names, no lab logo, no institution-identifying repo owner) until the paper is
@@ -120,7 +232,10 @@ deleted.
 | `static/css/bulma.min.css` | Bulma v0.9.1, vendored. Do not edit. |
 | `static/css/fonts.css` | `@font-face` for the two webfonts. Generated — do not edit. |
 | `static/css/index.css` | Everything page-specific: hero, stat row, phase cards, clip grid, media slots. |
-| `static/js/index.js` | The media-slot loader, and pausing off-screen clips. That is all it does. |
+| `static/js/index.js` | The media-slot loader, the tab groups, and pausing off-screen clips. |
+| `static/js/models.js` | The six rebar model viewers: lazy WebGL, camera framing, missing-file box. |
+| `static/js/vendor/` | three.js r147 + `GLTFLoader` + `OrbitControls`, classic builds. Do not edit. |
+| `static/models/` | `rebar_01.glb` … `rebar_06.glb`, plus a README with the file contract. |
 | `static/fonts/` | Google Sans + Noto Sans, latin/latin-ext subsets. |
 | `tools/vendor_fonts.py` | Re-downloads the fonts and regenerates `fonts.css`. Needs network. |
 | `tools/bundle_preview.py` | Inlines everything into one `_preview.html` for sharing. |
@@ -134,8 +249,9 @@ it, then update the `font-family` rules in `index.css`.
 python3 -m http.server 8000     # then open http://localhost:8000
 ```
 
-(Opening `index.html` via `file://` also works — nothing is fetched over the network —
-but a server matches the deployed behaviour more closely.)
+(Opening `index.html` via `file://` mostly works — nothing is fetched over the network
+— but the six rebar models stay placeholders there, because loading a `.glb` needs an
+XHR that browsers refuse for `file://` origins. Use the server to see them.)
 
 For a single file you can email or publish, `python3 tools/bundle_preview.py` writes
 `_preview.html` with the CSS, JS, fonts and as much media as fits in its 14 MB budget
