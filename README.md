@@ -1,5 +1,8 @@
 # RebarSim — project page
 
+> **Live page: <https://rebarsim.github.io/>**, deployed from a separate, anonymous repo.
+> This repo is the source, not the site: read [DEPLOY.md](DEPLOY.md) before publishing.
+
 Static project website for **"Visual Sim-to-Real Learning for Robotic Insertion under
 Geometric Variations: Application to Rebar Installation"** (ICRA 2027 submission).
 
@@ -281,38 +284,12 @@ so a squeeze costs the page a video rather than its typography.
 
 ## Publishing
 
-This repo is **public**, and GitHub Pages serves it directly from `main`:
+> **The live page is <https://rebarsim.github.io/>, served from the separate, anonymous
+> `rebarsim/rebarsim.github.io` repo. Pushing this repo publishes nothing, and GitHub
+> Pages must stay off here.** How to deploy, and why, is in [DEPLOY.md](DEPLOY.md).
 
-<https://tsrobcvai.github.io/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion/>
-
-So **pushing to `main` publishes**. There is no separate build or deploy step —
-GitHub rebuilds within a minute or so of the push, and `.nojekyll` is present so the
-files are served as-is.
-
-```bash
-git push origin main        # this is the deploy
-```
-
-### What that means while the paper is under review
-
-ICRA 2027 review is double-blind, and the page itself is written for that — the
-authors are `Anonymous`, affiliations are withheld. The repository around it is not
-anonymous, and cannot be made so while it is the thing being served:
-
-- the URL carries the `tsrobcvai` org name;
-- every commit is authored under a real name and institutional email;
-- this README names local paths and the sibling LaTeX repo.
-
-That is a deliberate choice, not an oversight. Keep it in mind before adding anything
-to the page that a reviewer is not supposed to see, and keep the on-page anonymity
-(author list, affiliations, acknowledgements) intact.
-
-An earlier version of this file described a two-repo split — a private source repo
-here and an anonymous public `rebarsim/rebarsim.github.io` user site — and warned
-against publishing from this one. That is no longer how the page is served; it is
-served from here. `rebarsim.github.io` still exists and still holds an older copy of
-the page, so if it is not wanted it should be taken down rather than left to drift
-out of date.
+An earlier revision of this section said the page was served from this repo's `main`
+at `tsrobcvai.github.io`. That was wrong: Pages was never enabled here, and must not be.
 
 ## Credits
 
