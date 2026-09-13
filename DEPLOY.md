@@ -57,7 +57,7 @@ What stays behind, and why:
 | --- | --- |
 | `README.md` | the site keeps its own short anonymous README; this one names paths and repos |
 | `DEPLOY.md`, `tools/`, `.gitignore`, `static/models/README.md` | dev-only |
-| `static/videos/sim/env2.mp4`, `env3.mp4`, `env9.mp4` | raw footage the hero was cut from; nothing on the page loads them |
+| `static/videos/sim/env2.mp4`, `env3.mp4`, `env9.mp4` | raw sim footage; nothing on the page loads them |
 
 `rsync --delete` leaves the excluded paths alone on the site side, so the site's own
 README survives, and anything removed here (an old clip, say) is removed there too.

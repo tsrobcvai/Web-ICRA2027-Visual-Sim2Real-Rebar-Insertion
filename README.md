@@ -115,17 +115,21 @@ ffmpeg -i raw.mov -vf "scale=960:-2" -c:v libx264 -crf 26 -preset slow \
 Aim for ≤ 8 MB per short clip. GitHub Pages has a **1 GB repo / 100 MB per-file**
 limit — if the long take gets big, host it on YouTube and embed instead.
 
-The hero was cut from `static/videos/sim/env2.mp4` (32 s, 1280×720). It sits behind
-the title under a dark scrim, so it is encoded harder than a clip you actually watch,
-and a poster frame covers the first paint:
+The hero is the six real-world rollouts from `static/videos/real/`, joined end to end
+(`rebar1/` then `rebar2/`) into one 24 s loop at their native 1280×720, 10 fps. It
+sits behind the title under a dark scrim, and a poster frame covers the first paint.
+It is encoded at CRF 23 rather than the CRF 30 a background usually gets: at 30 the
+rack slots and the bar's ribbing visibly smudge, and 23 still comes to half the size
+of the sim hero it replaced (6.3 MB).
 
 ```bash
-# desktop (6.3 MB) and the portrait crop phones get (3.6 MB)
-ffmpeg -i static/videos/sim/env2.mp4 -c:v libx264 -crf 30 -preset slow \
-       -pix_fmt yuv420p -movflags +faststart -an static/videos/hero.mp4
-ffmpeg -i static/videos/sim/env2.mp4 -vf "crop=466:720:(iw-466)/2:0" \
-       -c:v libx264 -crf 30 -preset slow -pix_fmt yuv420p -movflags +faststart -an \
-       static/videos/hero-mobile.mp4
+# desktop (3.1 MB) and the portrait crop phones get (1.4 MB)
+in=(); for f in static/videos/real/rebar1/*.mp4 static/videos/real/rebar2/*.mp4; do in+=(-i "$f"); done
+cat="concat=n=6:v=1:a=0,fps=10,setsar=1,format=yuv420p"
+ffmpeg "${in[@]}" -filter_complex "$cat[v]" -map "[v]" \
+       -c:v libx264 -crf 23 -preset slow -movflags +faststart -an static/videos/hero.mp4
+ffmpeg "${in[@]}" -filter_complex "$cat,crop=466:720:(iw-466)/2:0[v]" -map "[v]" \
+       -c:v libx264 -crf 23 -preset slow -movflags +faststart -an static/videos/hero-mobile.mp4
 ffmpeg -ss 3 -i static/videos/hero.mp4 -frames:v 1 -q:v 4 static/images/hero-poster.jpg
 ```
 
