@@ -214,7 +214,8 @@ ffmpeg -i ../LaTeX-.../figures_src/framework.png -vf "scale=2000:-1:flags=lanczo
 - Headline numbers: `>90 %`, `1.4 mm` — check against the final paper. The `>90 %`
   is what `long_demo.mp4` shows on screen: 45 successes in 49 consecutive attempts
   (91.8 %), so the two should be kept consistent.
-- Takeaways and BibTeX sections are stubs behind a `soon` chip
+- There is no Takeaways or BibTeX section any more; both were `soon` stubs and were
+  removed. A citation block will need adding back once the paper is out.
 - `static/videos/highlights.mp4` — the **Demos → Highlights** tab, still a `soon` chip
 - `static/models/rebar_01.glb` … `rebar_06.glb` — the six reconstructed bars
 
