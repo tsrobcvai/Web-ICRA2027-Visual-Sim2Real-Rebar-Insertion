@@ -261,43 +261,38 @@ so a squeeze costs the page a video rather than its typography.
 
 ## Publishing
 
-Two repos, on purpose:
+This repo is **public**, and GitHub Pages serves it directly from `main`:
 
-| | repo | visibility | holds |
-| --- | --- | --- | --- |
-| **source** | `tsrobcvai/Web-ICRA2027-…-Rebar-Insertion` | private | this tree — full history, `tools/`, this README |
-| **site** | `rebarsim/rebarsim.github.io` | public | the built page only, served at <https://rebarsim.github.io/> |
+<https://tsrobcvai.github.io/Web-ICRA2027-Visual-Sim2Real-Rebar-Insertion/>
 
-The split is what keeps the page anonymous while the paper is under review. The
-public repo is a **user site** owned by a neutral org, so the URL carries no name,
-and its two commits are authored `Anonymous <anonymous@users.noreply.github.com>`.
-
-> **Never `git push pages main`.** This repo's history is authored under a real
-> name and email, and the site repo is public — pushing it there would undo the
-> anonymity the split exists to provide. Publish a squashed, anonymous commit
-> instead:
+So **pushing to `main` publishes**. There is no separate build or deploy step —
+GitHub rebuilds within a minute or so of the push, and `.nojekyll` is present so the
+files are served as-is.
 
 ```bash
-git remote add pages git@github.com:rebarsim/rebarsim.github.io.git   # once
-git fetch pages
-
-git checkout -B publish pages/main
-git read-tree -u --reset main          # take this repo's tree...
-git rm -r --cached -q tools .gitignore # ...minus the dev-only bits
-rm -rf tools .gitignore
-git checkout pages/main -- README.md   # keep the short anonymous README
-
-git commit --author="Anonymous <anonymous@users.noreply.github.com>" -m "Update project page"
-git push pages publish:main
-git checkout main
+git push origin main        # this is the deploy
 ```
 
-GitHub rebuilds within a minute or so of the push. `.nojekyll` is already present
-so the files are served as-is.
+### What that means while the paper is under review
 
-Only the site repo needs Pages enabled; the private source repo stays dark. If the
-source repo is ever made public, scrub this README's absolute paths and squash the
-history first — both name the authors.
+ICRA 2027 review is double-blind, and the page itself is written for that — the
+authors are `Anonymous`, affiliations are withheld. The repository around it is not
+anonymous, and cannot be made so while it is the thing being served:
+
+- the URL carries the `tsrobcvai` org name;
+- every commit is authored under a real name and institutional email;
+- this README names local paths and the sibling LaTeX repo.
+
+That is a deliberate choice, not an oversight. Keep it in mind before adding anything
+to the page that a reviewer is not supposed to see, and keep the on-page anonymity
+(author list, affiliations, acknowledgements) intact.
+
+An earlier version of this file described a two-repo split — a private source repo
+here and an anonymous public `rebarsim/rebarsim.github.io` user site — and warned
+against publishing from this one. That is no longer how the page is served; it is
+served from here. `rebarsim.github.io` still exists and still holds an older copy of
+the page, so if it is not wanted it should be taken down rather than left to drift
+out of date.
 
 ## Credits
 
