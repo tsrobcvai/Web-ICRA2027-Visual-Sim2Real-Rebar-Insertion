@@ -5,7 +5,7 @@ Six `.glb` files, one per bar used in the real-world evaluations:
     rebar_01.glb  rebar_02.glb  rebar_03.glb
     rebar_04.glb  rebar_05.glb  rebar_06.glb
 
-Drop a file in and it appears in the **Real-World Evaluation → The six bars** grid;
+Drop a file in and it appears in the **Real-World Evaluation → Example bars from real-world tests** grid;
 until then that
 slot shows a "missing" box naming the path it wants. Nothing in `index.html` needs
 editing, and the display order is the file number.

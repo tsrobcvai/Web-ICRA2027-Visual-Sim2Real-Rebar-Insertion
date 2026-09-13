@@ -30,16 +30,17 @@ file to the right path.** No HTML editing needed.
 | `hero-mobile.mp4` | Same, centre-cropped to portrait for phones — ✅ **in place** |
 | `sim/showcase.mp4` | **In Simulation** — full-width showcase under the section heading — ✅ **in place** |
 | `sim/env2_ep1.mp4`, `sim/env9_ep1.mp4`, `sim/env2_ep3.mp4`, `sim/env2_ep2.mp4` | **In Simulation** grid — ✅ **in place** |
-| `rollout_01.mp4` … `rollout_04.mp4` | **Real-World Evaluation** grid, at the foot of the page — ✅ **in place** |
+| `real/rebar1/*.mp4`, `real/rebar2/*.mp4` | **Real-World Evaluation** grid, at the foot of the page — ✅ **in place** |
 | `long_demo.mp4` | **Demos → Uncut long demo** tab — ✅ **in place** |
 | `robust_background.mp4` | **Demos → Cluttered scene** tab — ✅ **in place** |
 | `robust_perturbation.mp4` | **Demos → Perturbation** tab — ✅ **in place** |
 | `highlights.mp4` | **Demos → Highlights** tab — ⬜ **missing**, shows a `soon` chip |
 
 The clips sit in a plain Bulma column grid (`columns is-multiline`, two per row on
-desktop, one per row on mobile). Adding a clip is another
-`<div class="column is-half"><figure class="clip">…</figure></div>` — there is no
-carousel or scroll handling to keep in sync.
+desktop, three in the real-world grid, one per row on mobile). Adding a clip is another
+`<div class="column is-half"><figure class="clip">…</figure></div>` (`is-one-third` in
+the real-world grid) — there is no carousel or scroll handling to keep in sync. The
+grid clips carry no captions.
 
 Clips are boxed at 16:9 and letterboxed on black, so mixed aspect ratios still line
 up. They autoplay muted on loop and pause when scrolled out of view. Two attributes
@@ -54,16 +55,12 @@ full-width `column` under `figure class="clip ultrawide"`, which boxes them at t
 own ratio (`.clip.ultrawide` in `static/css/index.css`) instead of letterboxing them
 inside a 16:9 half-column, where the burnt-in labels would be unreadable.
 
-The four rollouts came from `static/videos/` under their original names (all
-1280×720, 10 fps, 1.6–6.9 s). The number is the display order, so to reorder the
-grid, rename the files — the HTML never changes:
-
-| now | was |
-| --- | --- |
-| `rollout_01.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p372_y0p017_z0p277_20260722_124237.mp4` |
-| `rollout_02.mp4` | `student_8cam-mdepth-slotseg_model3000__ee_x0p407_y0p044_z0p262_20260725_140540.mp4` |
-| `rollout_03.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p408_y0p046_z0p267_20260718_120240.mp4` |
-| `rollout_04.mp4` | `student_9cam_cal0713_semantic_model9500__ee_x0p404_y0p021_z0p265_20260718_112222.mp4` |
+The six real-world rollouts sit in a 2 × 3 grid, one row per folder:
+`static/videos/real/rebar1/` on top, `rebar2/` under it (all 1280×720, 10 fps,
+2.0–5.0 s). They are used as recorded, under their original names — already H.264
+with the index at the front — so reordering them means moving their `column` blocks
+in `index.html`. They replaced four earlier clips, `rollout_01.mp4` … `rollout_04.mp4`,
+which are gone from the tree but still in git history.
 
 The long take and the two robustness clips came from
 `isaaclab_rollout/exports/long_demo/` (all 1604×720, 15 fps), re-encoded on the way in:
@@ -186,7 +183,7 @@ group, taking `is-active` off `uncut` and putting it on `highlights`.
 ### Rebar models → `static/models/`
 
 Six `.glb` files, `rebar_01.glb` … `rebar_06.glb`, shown as drag-to-rotate viewers at
-the head of **Real-World Evaluation → The six bars**. Same contract as a media slot: drop the file in and it
+the head of **Real-World Evaluation → Example bars from real-world tests**. Same contract as a media slot: drop the file in and it
 appears, and until then the slot names the path it wants. The file-level details —
 Y-up, ≤ 2 MB per bar, why decimating matters — are in `static/models/README.md`.
 
