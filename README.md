@@ -28,6 +28,7 @@ file to the right path.** No HTML editing needed.
 | --- | --- |
 | `hero.mp4` | Full-screen hero background (desktop) — ✅ **in place** |
 | `hero-mobile.mp4` | Same, centre-cropped to portrait for phones — ✅ **in place** |
+| `sim/showcase.mp4` | **In Simulation** — full-width showcase under the section heading — ✅ **in place** |
 | `sim/env2_ep1.mp4`, `sim/env9_ep1.mp4`, `sim/env2_ep3.mp4`, `sim/env2_ep2.mp4` | **In Simulation** grid — ✅ **in place** |
 | `rollout_01.mp4` … `rollout_04.mp4` | **Real-World Evaluation** grid, at the foot of the page — ✅ **in place** |
 | `long_demo.mp4` | **Demos → Uncut long demo** tab — ✅ **in place** |
@@ -131,6 +132,28 @@ ffmpeg -ss 3 -i static/videos/hero.mp4 -frames:v 1 -q:v 4 static/images/hero-pos
 Swapping the hero for different footage means re-cutting all three. The portrait crop
 is 466×720 (0.647); if you change that ratio, update the matching `height`/`min-width`
 percentages on the mobile `.hero-video` in `index.html`.
+
+The **In Simulation** showcase is set up like the "Task Tracking without Simulating
+Tasks" video on [UMI on Legs](https://umi-on-legs.github.io/): the heading sits on a
+black band and the clip runs the full width of the window straight under it, outside
+any container, muted and looping with no controls (`.sim-showcase` in
+`static/css/index.css`). The four grid clips follow in a section of their own.
+
+It is `showcase_video/v4_18s_400env_p2_AW_fresh/showcase.mp4` (1920×1080, 30 fps, 18 s,
+CRF 16), copied in without re-encoding. It was only remuxed: the render wrote the index
+at the end of the file, so a browser would have had to fetch the tail before playing.
+
+```bash
+ffmpeg -i showcase.mp4 -c copy -movflags +faststart static/videos/sim/showcase.mp4
+```
+
+The same render also exists at CRF 24 (`showcase_1080p_small.mp4`, 14 MB), and was
+passed over. Shown edge to edge, its pull-back across the 400 environments smears —
+table textures and the rack's slot beads go soft — and at its worst frame it falls to
+32 dB luma PSNR against the rendered PNGs, where CRF 16 keeps 39 dB. The price is
+weight: at 38 MB this is the heaviest clip on the page that autoplays, and while the
+first 8 s run at about 7 Mbps, the 4 s pull-back averages about 38 Mbps, so a slow
+connection will stall there on the first loop.
 
 ### Demo tabs
 

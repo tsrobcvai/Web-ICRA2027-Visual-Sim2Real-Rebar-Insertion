@@ -283,6 +283,29 @@ body {
   color: #6b7280;
 }
 
+/* ------------------------------ sim showcase ------------------------------ */
+
+/* The In Simulation showcase, after the sim video on umi-on-legs.github.io: it runs
+   the full width of the window, straight under the section's black band. Boxed at
+   its own 16:9 so the page below does not jump when it loads, and black so the band
+   carries on down until it does. */
+.sim-showcase .media-slot.video {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  background: #000;
+}
+
+.sim-showcase .media-slot.video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* .clip-note's grey is set for a white page; on the band it falls to about 4.3:1. */
+#sim .clip-note {
+  color: rgba(255, 255, 255, .62);
+}
+
 /* ------------------------------ phase cards ------------------------------ */
 
 .phase {
