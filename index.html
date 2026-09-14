@@ -451,7 +451,7 @@
       <!-- The bars themselves: six real bars, scanned and reconstructed, so a reader can
            see for themselves how much the geometry varies. Each slot loads
            static/models/rebar_0N.glb on first scroll-in; see static/js/models.js. -->
-      <div class="columns is-multiline is-centered model-grid">
+      <div class="columns is-multiline is-centered is-mobile model-grid">
         <div class="column is-one-third is-half-mobile">
           <figure class="model">
             <div class="model-slot" data-model="static/models/rebar_01.glb" data-label="Bar 1"></div>
@@ -572,6 +572,7 @@
   <script src="./static/js/vendor/three.min.js"></script>
   <script src="./static/js/vendor/GLTFLoader.js"></script>
   <script src="./static/js/vendor/OrbitControls.js"></script>
+  <script src="./static/js/vendor/meshopt_decoder.js"></script>
   <script src="./static/js/models.js"></script>
 </body>
 

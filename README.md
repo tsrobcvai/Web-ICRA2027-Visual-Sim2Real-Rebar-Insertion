@@ -192,13 +192,16 @@ group, taking `is-active` off `uncut` and putting it on `highlights`.
 Six `.glb` files, `rebar_01.glb` … `rebar_06.glb`, shown as drag-to-rotate viewers at
 the head of **Real-World Evaluation → Example bars from real-world tests**. Same contract as a media slot: drop the file in and it
 appears, and until then the slot names the path it wants. The file-level details —
-Y-up, ≤ 2 MB per bar, why decimating matters — are in `static/models/README.md`.
+Y-up, and how the six were exported, simplified and compressed (722 KB for all six,
+down from 40 MB) — are in `static/models/README.md`.
 
 The viewer is `static/js/models.js` on three.js **r147**, vendored under
 `static/js/vendor/` as the *classic* (non-module) builds so there is still no CDN, no
 import map and no build step. r147 is the last release that ships `examples/js`, which
 is where `GLTFLoader` and `OrbitControls` come from; upgrading means switching the page
-to ES modules, which in turn gives up `file://`.
+to ES modules, which in turn gives up `file://`. The bars are meshopt-compressed, so
+`static/js/vendor/meshopt_decoder.js` (meshoptimizer 1.2, a classic script that sets
+the `MeshoptDecoder` global) loads ahead of `models.js`.
 
 Each viewer builds its WebGL context the first time it scrolls into view, and the
 render loop only ticks the viewers currently on screen — six live canvases would
@@ -244,7 +247,6 @@ ffmpeg -i ../LaTeX-.../figures_src/framework.png -vf "scale=2000:-1:flags=lanczo
 - There is no Takeaways or BibTeX section any more; both were `soon` stubs and were
   removed. A citation block will need adding back once the paper is out.
 - `static/videos/highlights.mp4` — the **Demos → Highlights** tab, still a `soon` chip
-- `static/models/rebar_01.glb` … `rebar_06.glb` — the six reconstructed bars
 
 > **Double-blind:** ICRA 2027 review is double-blind. Keep the page anonymous (no
 > author names, no lab logo, no institution-identifying repo owner) until the paper is
@@ -262,7 +264,7 @@ ffmpeg -i ../LaTeX-.../figures_src/framework.png -vf "scale=2000:-1:flags=lanczo
 | `static/css/index.css` | Everything page-specific: hero, stat row, phase cards, clip grid, media slots. |
 | `static/js/index.js` | The media-slot loader, the tab groups, and pausing off-screen clips. |
 | `static/js/models.js` | The six rebar model viewers: lazy WebGL, camera framing, missing-file box. |
-| `static/js/vendor/` | three.js r147 + `GLTFLoader` + `OrbitControls`, classic builds. Do not edit. |
+| `static/js/vendor/` | three.js r147 + `GLTFLoader` + `OrbitControls`, classic builds, and meshoptimizer 1.2's `meshopt_decoder.js`. Do not edit. |
 | `static/models/` | `rebar_01.glb` … `rebar_06.glb`, plus a README with the file contract. |
 | `static/fonts/` | Google Sans + Noto Sans, latin/latin-ext subsets. |
 | `tools/vendor_fonts.py` | Re-downloads the fonts and regenerates `fonts.css`. Needs network. |

@@ -17,9 +17,11 @@
    over file://, where browsers refuse the XHR a loader needs; the deployed page
    is served over https, so it only affects opening index.html locally.
 
-   Needs static/js/vendor/{three.min,GLTFLoader,OrbitControls}.js ahead of it.
-   These are three.js r147 classic builds, which attach to the THREE global --
-   no module loader, no CDN, no build step.
+   Needs static/js/vendor/{three.min,GLTFLoader,OrbitControls,meshopt_decoder}.js
+   ahead of it. The first three are three.js r147 classic builds, which attach to
+   the THREE global -- no module loader, no CDN, no build step. The bars ship
+   meshopt-compressed (EXT_meshopt_compression); meshopt_decoder.js is the decoder
+   GLTFLoader needs for that, and attaches to the MeshoptDecoder global.
    ============================================================ */
 
 (function () {
@@ -52,7 +54,9 @@
   function build(slot) {
     var url = slot.getAttribute("data-model");
 
-    new THREE.GLTFLoader().load(
+    var loader = new THREE.GLTFLoader();
+    if (typeof MeshoptDecoder !== "undefined") { loader.setMeshoptDecoder(MeshoptDecoder); }
+    loader.load(
       url,
       function (gltf) { mount(slot, gltf.scene); },
       null,

@@ -1,4 +1,5 @@
 .DS_Store
 *.mov
 *.MOV
+*.blend
 _preview.html
